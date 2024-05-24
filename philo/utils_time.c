@@ -29,10 +29,12 @@ void	ft_usleep(int cndtn)
 	long	rmng_tm;
 
 	start = crnt_tm();
-	while (elpsd_tm = crnt_tm() - start;
-	rmng_tm = cndtn - elpsd_tm;
-	if (rmng_tm > 0)
-		usleep(rmng_tm * 1000);
-	else
-		break;
+	while (elpsd_tm = crnt_tm() - start)
+	{
+		rmng_tm = cndtn - elpsd_tm;
+		if (rmng_tm > 0)
+			usleep(rmng_tm * 1000);
+		else
+			break;
+	}
 }
