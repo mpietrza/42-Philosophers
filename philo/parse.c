@@ -1,28 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpietrza <mpietrza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 15:10:57 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/05/13 15:21:41 by mpietrza         ###   ########.fr       */
+/*   Created: 2024/05/27 17:03:09 by mpietrza          #+#    #+#             */
+/*   Updated: 2024/05/27 17:14:47 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include <philo.h>
 
-long	get_time(void)
+bool	ft_parse_input(t_data *d, char **argv)
 {
-//	t_timeval
 
-	return (milisecs);
-}
-int	main(int argc, char **argv)
-{
-	t_data	*d;
-
-	d = 
-
-	return (0);
-}

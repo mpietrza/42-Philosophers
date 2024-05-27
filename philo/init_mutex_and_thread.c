@@ -17,13 +17,14 @@ int	ft_init_mutex(t_data *d, t_mutex *m)
 	int	i;
 
 	i = 0;
-	while (i < d->nbr_of_phlsphrs)
+	while (i < d->nbr_of_philos)
 	{
 		pthread_mutex_lock(&m->mutex_last_meal);
-		d->phlsphr[i].last_meal = 0;
+		d->philo[i].last_meal = 0;
 		pthread_mutex_unlock(&m->mutex_last_meal);
-		if (pthread_create(&m->thread[i], NULL, &phlsphr_routine, (void *)d) != 0) //have to check it
+		if (pthread_create(&m->thread[i], NULL, &philo_routine, (void *)d) != 0) //have to check it
 			return (-1);
+		i++;
 	}
 	return (0);
 }

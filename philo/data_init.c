@@ -1,28 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpietrza <mpietrza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 15:10:57 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/05/13 15:21:41 by mpietrza         ###   ########.fr       */
+/*   Created: 2024/05/27 17:12:01 by mpietrza          #+#    #+#             */
+/*   Updated: 2024/05/27 17:53:39 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	get_time(void)
+t_data	*ft_data_init(t_data *d, int argc, char **argc)
 {
-//	t_timeval
 
-	return (milisecs);
-}
-int	main(int argc, char **argv)
-{
-	t_data	*d;
-
-	d = 
-
-	return (0);
-}
