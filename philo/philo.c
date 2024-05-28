@@ -18,11 +18,16 @@ long	get_time(void)
 
 	return (milisecs);
 }
+
 int	main(int argc, char **argv)
 {
 	t_data	*d;
 
-	d = 
+	if (!(argc == 5 || argc == 6) || ft_check_argv(argv) == false)
+		return (1);
+	d = ft_prase_input(argc, argv);
+	if (!d)
+		return (1);
 
 	return (0);
 }

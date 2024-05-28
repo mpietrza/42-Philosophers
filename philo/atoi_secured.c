@@ -13,7 +13,7 @@
 
 #include "philo.h"
 
-static int	ft_skip_blanks_and_sign(const char *str, t_data *d)
+static int	ft_skip_blanks_and_sign(const char *str)
 {
 	int	i;
 
@@ -22,16 +22,13 @@ static int	ft_skip_blanks_and_sign(const char *str, t_data *d)
 		|| str[i] == '\v' || str[i] == '\f' || str[i] == '\r')
 		i++;
 	if (str[i] == '-')
-	{
-		d->atoi_error_index = -1;
 		return (-1);
-	}
 	else if (str[i] == '+')
 		i++;
 	return (i);
 }
 
-unsigned int	ft_atoui_secured(const char *str, t_data *d)
+long	ft_atoi_pos_secured(const char *str)
 {
 	int		i;
 	long	result;
@@ -46,9 +43,6 @@ unsigned int	ft_atoui_secured(const char *str, t_data *d)
 		i++;
 	}
 	if (result > INT_MAX)
-	{
-		result = INT_MAX + 1;
-		d->atoi_error_index = 1;
-	}
+		return (-1);
 	return (result);
 }

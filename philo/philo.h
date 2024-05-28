@@ -25,26 +25,42 @@
 //						pthread_mutex_lock, pthread_mutex_unlock
 
 /*struct - for data transfer thoughout the program*/
+
+typedef pthread_mutex_t t_mtx;
+
+typedef struct s_fork
+{
+	t_mtx		fork;
+	int			fork_id;
+}				t_fork;
+
 typedef struct s_philo
 {
-	int			num_o_meals;
-	long		last_meal;
-	int			fork_l;
-	int			fork_r;
-	struct 		s_data		*d; //!!!??
+	int			id;
+	long		num_o_meals;
+	bool		is_full;
+	long		when_was_last_meal; 
+	t_fork		*fork_l;
+	t_fork		*fork_r;
+	pthread_t	thread_id; // a philo is a thread
 }				t_philo;
+
+typedef struct s_table
+{
+	long			nbr_of_philos;
+	long		tm_t_die;
+	long		tm_t_eat;
+	long		tm_t_sleep;
+	long		nbr_of_meals_per_philo; // if -1 = error; if -2 = no arg
+	long		when_simulation_started;
+	bool		is_smltn_going;
+	t_fork		*forks; //array of forks
+	t_philo		*philos; // array of philos
+}				t_table;
 
 typedef struct s_data
 {
-	int					philo_init;
-	bool				is_smltn_on;
-	int					id;
-	int					nbr_of_philos;
-	int					tm_t_die;
-	int					tm_t_eat;
-	int					tm_t_sleep;
-	int					nbr_o_tms_each_phlsphr_mst_eat;
-//	t_philo				*philo;
+	t_table				*t;
 	long				s_time;
 	int					atoi_error_index;
 }						t_data;
@@ -69,7 +85,7 @@ void	ft_eat(t_data *d, t_mutex *m, int i);
 void	ft_sleep(t_data *d, t_mutex *m, int i);
 
 /*atoi_secured.c*/
-int		ft_atoi_secured(const char *str, t_data *d);
+int		ft_atoi_pos_secured(const char *str);
 
 /*init_mutex_and_thread.c*/
 int ft_init_mutex(t_data *d);
