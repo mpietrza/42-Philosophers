@@ -31,7 +31,7 @@ void	ft_free_data(t_data *d)
 				if (d->t->forks->fork_r)
 				{
 				//	if (d->t->forks->fork_r->fork)??
-					free(fork_r;
+					free(fork_r);
 				}
 			free(d->t);
 		free(d);

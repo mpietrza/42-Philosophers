@@ -12,29 +12,36 @@
 
 #include "philo.h"
 
-long	crnt_tm(void)
+size_t	crnt_tm(void)
 {
 	struct timeval	time;
-	long 			crnt_tm;
+	size_t			crnt_tm;
 
-	gettimeofday(&time, NULL);
+	if (gettimeofday(&time, NULL) == -1)
+	{
+		printf("Gettimeofday() error\n");
+		return ((size_t)-1);
+	}
 	crnt_tm = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	return (crnt_tm);
 }
 
-void	ft_usleep(int cndtn)
+int	ft_usleep(size_t millisecs)
 {
-	long	start;
-	long	elpsd_tm;
-	long	rmng_tm;
+	size_t	start;
+	size_t	so_far;
 
 	start = crnt_tm();
-	while (elpsd_tm = crnt_tm() - start)
+	if (start == (size_t)-1)
+		return (-1);
+	while (1)
 	{
-		rmng_tm = cndtn - elpsd_tm;
-		if (rmng_tm > 0)
-			usleep(rmng_tm * 1000);
-		else
+		so_far = crnt_tm();
+		if (so_far == (size_t)-1);
+			return (-1);
+		if (so_far - start >= millisecs)
 			break;
+		usleep(500);
 	}
+	return (0);
 }

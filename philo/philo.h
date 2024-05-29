@@ -28,53 +28,36 @@
 
 typedef pthread_mutex_t t_mtx;
 
-typedef struct s_fork
-{
-	t_mtx		fork;
-	int			fork_id;
-}				t_fork;
-
 typedef struct s_philo
 {
-	int			id;
-	long		num_o_meals;
-	bool		is_full;
-	long		when_was_last_meal; 
-	t_fork		*fork_l;
-	t_fork		*fork_r;
 	pthread_t	thread_id; // a philo is a thread
-}				t_philo;
-
-typedef struct s_table
-{
-	long			nbr_of_philos;
-	long		tm_t_die;
-	long		tm_t_eat;
-	long		tm_t_sleep;
-	long		nbr_of_meals_per_philo; // if -1 = error; if -2 = no arg
+	int			philo_id;
+	bool		is_eating;
+	int			num_o_meals_eaten;
+	size_t		when_was_last_meal; 
+	size_t		tm_t_die;
+	size_t		tm_t_eat;
+	size_t		tm_t_sleep;
 	long		when_simulation_started;
-	bool		is_smltn_going;
-	t_fork		*forks; //array of forks
-	t_philo		*philos; // array of philos
-}				t_table;
+	int			nbr_of_philos;
+	long		nbr_of_meals_per_philo; // if -1 = error; if -2 = no arg
+	bool		*is_dead;
+	t_mtx		*fork_l;
+	t_mtx		*fork_r;
+	t_mtx		*write_lock;
+	t_mtx		*death_lock;
+	t_mtx		*meal_lock;
+}				t_philo;
 
 typedef struct s_data
 {
-	t_table				*t;
-	long				s_time;
-	int					atoi_error_index;
-}						t_data;
-
-typedef struct s_mutex
-{
-	pthread_t		*thread;
-	pthread_mutex_t	*mutex;
-	pthread_mutex_t	mutex_last_meal;
-	pthread_mutex_t	mutex_stat;
-	pthread_mutex_t	mutex_i;
-	pthread_mutex_t	mutex_msg;
-	pthread_mutex_t	mutex_fork;
-}					t_mutex;
+	bool		death_flag;
+	t_mtx		death_lock;
+	t_mtx		meal_lock;
+	t_mtx		write_lock;
+	int			atoi_error_index;
+	t_philo		*philos;
+}				t_data;
 
 
 /***************************** list of functions ******************************/
@@ -99,7 +82,7 @@ void	string_to_args(t_data *data, int argc, char **argv);
 t_data	*data_calloc(int argc, char **argv);
 
 /*routine.c*/
-int		is_philo_dead(t_data *d);
+int		is_philo_dead(t_philo *t);
 void	*philo_routine(void *f);
 
 /*utils_time*/
