@@ -6,13 +6,13 @@
 /*   By: mpietrza <mpietrza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:33:38 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/05/14 14:46:39 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/06/05 16:49:06 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-size_t	crnt_tm(void)
+size_t	ft_crnt_tm(void)
 {
 	struct timeval	time;
 	size_t			crnt_tm;
@@ -31,12 +31,12 @@ int	ft_usleep(size_t millisecs)
 	size_t	start;
 	size_t	so_far;
 
-	start = crnt_tm();
+	start = ft_crnt_tm();
 	if (start == (size_t)-1)
 		return (-1);
 	while (1)
 	{
-		so_far = crnt_tm();
+		so_far = ft_crnt_tm();
 		if (so_far == (size_t)-1);
 			return (-1);
 		if (so_far - start >= millisecs)

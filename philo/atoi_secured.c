@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi_secured.c                                  :+:      :+:    :+:   */
+/*   atoi_secured.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpietrza <mpietrza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:02:07 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/05/14 14:02:12 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/06/05 15:53:24 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ static int	ft_skip_blanks_and_sign(const char *str)
 	return (i);
 }
 
-long	ft_atoi_pos_secured(const char *str)
+size_t	ft_atoi_pos_secured(const char *str)
 {
-	int		i;
-	long	result;
+	int	i;
+	size_t	result;
 
 	result = 0;
 	i = ft_skip_blanks_and_sign(str, d);
