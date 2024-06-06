@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:48:31 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/06/05 17:10:55 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/06/06 17:21:17 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_data
 	size_t		tm_t_eat;	
 	size_t		tm_t_sleep;	
 	size_t		nbr_of_meals_per_philo; // if -1 = error; if -2 = no arg
-	long		when_sim_started;
+	size_t		when_sim_started;
 	bool		is_dead_flag;
 	t_mtx		write_lock;
 	t_mtx		death_lock;
@@ -63,19 +63,18 @@ typedef struct s_data
 
 /***************************** list of functions ******************************/
 /*actions.c*/
-//void	w_status(char *s, t_data *d, t_mutex *m, int i);
-//void	ft_take_fork(t_data *d, t_mutex *m, int i);
-//void	ft_eat(t_data *d, t_mutex *m, int i);
-//void	ft_sleep(t_data *d, t_mutex *m, int i);
+void	ft_message(char *s, t_philo *p, t_data *d, int id);
+void	ft_eat(t_philo *p, t_data *d);
+void	ft_sleep(t_philo *p, t_data *d);
+void	ft_think(t_philo *p);
 
 /*atoi_secured.c*/
 size_t	ft_atoi_pos_secured(const char *str);
 
-/*init_mutex_and_thread.c*/
-int ft_init_mutex(t_data *d);
-
-/*parse.c*/
-t_data	*ft_parse_input(int argc, char **argv);
+/*init_parse.c*/
+void	ft_init_forks(t_mtx *fs, size_t nbr_of_philos);
+void	ft_init_philos(t_philo *ps, t_data *d, t_mtx *fs, char **argv);
+t_data	*ft_parse_input(int argc, char **argv, t_philo *ps);
 
 /*!!!!!!philo.c!!!!!!*/
 

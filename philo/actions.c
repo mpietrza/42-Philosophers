@@ -6,39 +6,55 @@
 /*   By: mpietrza <mpietrza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 17:08:28 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/05/24 17:33:46 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:54:57 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	w_status(char *s, t_data *d, t_mutex *m, int i)
+void	ft_message(char *s, t_philo *p, t_data *d, int id)
 {
-	long	time;
+	size_t	time;
 
-	pthread_mutex_lock(&m->mutex_msg);
-	time = crnt_tm() - d->s_time;
-	if (i <= d->nbr_of_philos && check_meals(d) == 0 && d->is_smltn_on == 1)
-		printf("%ld %d %s\n", time, i, s);
-	pthread_mutex_unlock(&m->mutex_msg);
+	pthread_mutex_lock(p->write_lock);
+	time = ft_crnt_tm() - d->when_sim_started;
+	if (!death_loop(p))
+		printf("%zu %d %s\n", time, id, s);
+	pthread_mutex_unlock(p->write_lock);
 }
 
-void	ft_take_fork(t_data *d, t_mutex *m, int i)
+void	ft_eat(t_philo *p, t_data *d)
 {
-	pthread_mutex_lock(&m->mutex[d->nbr_of_philos[i].fork_r]);
-	w_status("has taken a fork\n", d, i + 1);
-	//...
+	pthread_mutex_lock(p->fork_r);
+	ft_message("has taken a fork", p, p->philo_id);
+	if (p->nbr_of_philos == 1)
+	{
+		ft_usleep(d->tm_t_die);
+		pthread_mutex_unlock(p->fork_r);
+		return ;
+	}
+	pthread_mutex_lock(p->fork_l);
+	ft_message("has taken a fork", p, p->philo_id);
+	p->is_eating = true;
+	ft_message("is eating", p, p->philo_id);
+	pthread_mutex_lock(p->meal_lock);
+	p->when_was_last_meal = ft_crnt_tm();
+	p->nbr_of_meals_eaten++;
+	pthread_mutex_unlock(p->meal_lock);
+	ft_usleep(p->tm_t_eat);
+	p->is_eating = false;
+	pthread_mutex_unlock(p->fork_l);
+	pthread_mutex_unlock(p->fork_r);
 }
 
-void	ft_eat(t_data *d, t_mutex *m, int i)
+void	ft_sleep(t_philo *p, t_data *d)
 {
-	w_status("is eating\n", d, m, i + 1);
-	d->philo[i].num_o_meals++;
-	//..
-}
-
-void	ft_sleep(t_data *d, t_mutex *m, int i)
-{
-	w_status("is sleeping\n", d, m, i + 1);
+	ft_message("is sleeping", p, p->philo_id);
 	ft_usleep(d->tm_t_sleep);
-	w_status("is thinking\n", d, m, i + 1);
+}
+
+
+void	ft_think(t_philo *p)
+{
+	ft_message("is thinking", p, p->philo_id);i
+}
