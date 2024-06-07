@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:48:31 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/06/06 17:21:17 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:20:47 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,17 @@ void	ft_think(t_philo *p);
 /*atoi_secured.c*/
 size_t	ft_atoi_pos_secured(const char *str);
 
+/*arg_check.c*/
+bool     ft_my_isdigit(int c);
+bool    ft_check_argv(const char **argv);
+//char  *ft_strchr(const char *s, int c);
+
+
+/*free_exit.c*/
+void	ft_free_philos(t_philo *ps, size_t nbr_of_philos);
+void	ft_free_data(t_data *d);
+void    ft_free_all(t_philo *ps, t_data *d);
+
 /*init_parse.c*/
 void	ft_init_forks(t_mtx *fs, size_t nbr_of_philos);
 void	ft_init_philos(t_philo *ps, t_data *d, t_mtx *fs, char **argv);
@@ -78,13 +89,12 @@ t_data	*ft_parse_input(int argc, char **argv, t_philo *ps);
 
 /*!!!!!!philo.c!!!!!!*/
 
-/*routine.c*/
-int		is_philo_dead(t_philo *t);
-void	*philo_routine(void *f);
+/*threads.c*/
+void	*ft_philo_routine(void *ptr);
+int	thread_create(t_data *d, t_mtx *fs);
 
-/*utils_time*/
-long	ft_crnt_tm(void);
-void	ft_usleep(int cndtn);
-
+/*utils_time.c*/
+size_t	ft_crnt_tm(void);
+bool	ft_usleep(size_t millisecs);
 
 #endif

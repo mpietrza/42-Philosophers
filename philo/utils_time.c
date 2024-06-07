@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:33:38 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/06/06 15:44:49 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/06/07 14:56:19 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,22 @@ size_t	ft_crnt_tm(void)
 	return (crnt_tm);
 }
 
-int	ft_usleep(size_t millisecs)
+bool	ft_usleep(size_t millisecs)
 {
 	size_t	start;
 	size_t	so_far;
 
 	start = ft_crnt_tm();
 	if (start == (size_t) -1)
-		return (-1);
+		return (false);
 	while (1)
 	{
 		so_far = ft_crnt_tm();
 		if (so_far == ((size_t) -1))
-			return (-1);
+			return (false);
 		if (so_far - start >= millisecs)
 			break ;
 		usleep(500);
 	}
-	return (0);
+	return (true);
 }

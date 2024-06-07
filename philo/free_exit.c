@@ -6,7 +6,7 @@
 /*   By: mpietrza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:08:14 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/06/06 15:33:20 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:19:33 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,24 @@ void	ft_free_data(t_data *d)
 			ft_free_philos(d->ps, d->nbr_of_philos);
 		free(d);
 	}
+}
+
+void	ft_free_all(t_philo *ps, t_data *d)
+{
+	size_t	i;
+
+	i = 0;
+	if (ps)
+	{
+		if(d)
+			ft_free_philos(ps, d->nbr_of_philos);
+		else
+		{
+			while (philos[i])
+				i++;
+			ft_free_philos(ps, i);
+		}
+	}
+	if (d)
+		ft_free_data(d);
 }
