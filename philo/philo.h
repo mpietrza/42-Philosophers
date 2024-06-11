@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:48:31 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/06/07 16:20:47 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/06/11 16:33:46 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,9 @@ void    ft_free_all(t_philo *ps, t_data *d);
 void	ft_init_forks(t_mtx *fs, size_t nbr_of_philos);
 void	ft_init_philos(t_philo *ps, t_data *d, t_mtx *fs, char **argv);
 t_data	*ft_parse_input(int argc, char **argv, t_philo *ps);
+
+/*monitoring.c*/
+
 
 /*!!!!!!philo.c!!!!!!*/
 
