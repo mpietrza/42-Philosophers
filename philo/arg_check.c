@@ -6,7 +6,7 @@
 /*   By: mpietrza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:08:51 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/06/07 16:08:55 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/06/12 19:05:21 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,10 @@ bool	ft_check_argv(const char **argv)
 	i = 1;
 	while (argv[i])
 	{
+		j = 0;
 		while (argv[i][j])
 		{	
-			if (ft_my_isdigit(s[i][j]) == false)
+			if (ft_my_isdigit(argv[i][j]) == false)
 			{
 				ft_check_argv_err_message(i);
 				return (false);

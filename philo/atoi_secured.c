@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:02:07 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/06/06 15:33:56 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/06/12 19:04:11 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ size_t	ft_atoi_pos_secured(const char *str)
 	size_t	result;
 
 	result = 0;
-	i = ft_skip_blanks_and_sign(str, d);
+	i = ft_skip_blanks_and_sign(str);
 	if (i == -1)
 		return (-1);
 	while (str[i] >= '0' && str[i] <= '9')

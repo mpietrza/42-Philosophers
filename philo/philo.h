@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:48:31 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/06/11 16:33:46 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/06/12 19:03:01 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct s_data
 void	ft_message(char *s, t_philo *p, t_data *d, int id);
 void	ft_eat(t_philo *p, t_data *d);
 void	ft_sleep(t_philo *p, t_data *d);
-void	ft_think(t_philo *p);
+void	ft_think(t_philo *p, t_data *d);
 
 /*atoi_secured.c*/
 size_t	ft_atoi_pos_secured(const char *str);
@@ -88,13 +88,17 @@ void	ft_init_philos(t_philo *ps, t_data *d, t_mtx *fs, char **argv);
 t_data	*ft_parse_input(int argc, char **argv, t_philo *ps);
 
 /*monitoring.c*/
-
+bool	ft_is_philo_dead(t_philo *p, size_t time_to_die);
+bool	ft_has_anyone_died(t_philo *ps);
+bool    ft_have_all_eaten(t_philo *ps);
+void    *ft_monitoring(void *ptr);
 
 /*!!!!!!philo.c!!!!!!*/
 
 /*threads.c*/
+bool    ft_death_loop(t_philo *p, t_data *d);
 void	*ft_philo_routine(void *ptr);
-int	thread_create(t_data *d, t_mtx *fs);
+int	ft_thread_create(t_data *d, t_mtx *fs);
 
 /*utils_time.c*/
 size_t	ft_crnt_tm(void);
