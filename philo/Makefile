@@ -6,7 +6,7 @@
 #    By: mpietrza <mpietrza@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/18 14:21:04 by mpietrza          #+#    #+#              #
-#    Updated: 2024/06/11 16:33:35 by mpietrza         ###   ########.fr        #
+#    Updated: 2024/06/13 14:54:36 by mpietrza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		= philo
 DIR_OBJS	= ./objs/
 INCLUDE		= philo.h
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror #-fsanitize=address# -g
+CFLAGS		= -Wall -Wextra -Werror -fsanitize=address# -g
 RM			= rm -f
 
 #COLORS

@@ -6,29 +6,41 @@
 /*   By: mpietrza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:16:05 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/06/06 15:19:40 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:53:30 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_init_forks(t_mtx *fs, size_t nbr_of_philos)
+bool	ft_init_forks(t_mtx *fs, t_data *d)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < nbr_of_philos)
+	while (i < d->nbr_of_philos)
 	{
-		pthread_mutex_init(&fs[i], NULL);
+		if (pthread_mutex_init(&fs[i], NULL) != 0)
+		{
+			ft_err_exit(d, "Error initializing fork mutex");
+			return (false);
+		}
 		i++;
 	}
+	return (true);
 }
 
-void	ft_init_philos(t_philo *ps, t_data *d, t_mtx *fs, char **argv)
+t_philo	*ft_init_philos(t_data *d, t_mtx *fs)
 {
 	size_t	i;
+	t_philo	*ps;
 
 	i = 0;
+	ps = (t_philo *)malloc(sizeof(t_philo) * d->nbr_of_philos);
+	if (!ps)
+	{
+		ft_err_exit(d, "Memory allocation error - philos");
+		return (NULL);
+	}
 	while (i < d->nbr_of_philos)
 	{
 		ps[i].philo_id = i + 1;
@@ -44,12 +56,14 @@ void	ft_init_philos(t_philo *ps, t_data *d, t_mtx *fs, char **argv)
 		ps[i].write_lock = &d->write_lock;
 		ps[i].death_lock = &d->death_lock;
 		ps[i].meal_lock = &d->meal_lock;
+		ps[i].d = d;
 		i++;
 	}
+	return (ps);
 }
 
 
-t_data	*ft_parse_input(int argc, char **argv, t_philo *ps)
+t_data	*ft_parse_input(int argc, const char **argv)
 {
 	t_data	*d;
 	
@@ -61,7 +75,7 @@ t_data	*ft_parse_input(int argc, char **argv, t_philo *ps)
 	d->tm_t_eat = ft_atoi_pos_secured(argv[3]) * 1000;
 	d->tm_t_sleep = ft_atoi_pos_secured(argv[4]) * 1000;
 	if (argc == 6)
-		d->nbr_of_meals_per_philo = ft_atoi_secured(argv[5]);
+		d->nbr_of_meals_per_philo = ft_atoi_pos_secured(argv[5]);
 	else
 		d->nbr_of_meals_per_philo = -2;
 	d->when_sim_started = 0;
@@ -70,6 +84,6 @@ t_data	*ft_parse_input(int argc, char **argv, t_philo *ps)
 	pthread_mutex_init(&d->death_lock, NULL);
 	pthread_mutex_init(&d->meal_lock, NULL);
 	d->atoi_errno = 0;
-	d->ps = ps;
+	d->ps = NULL;
 	return (d);
 }

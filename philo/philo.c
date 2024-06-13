@@ -6,24 +6,46 @@
 /*   By: mpietrza <mpietrza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 15:10:57 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/06/11 16:06:08 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:59:34 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+int	main(int argc, const char **argv)
 {
-	t_data	d;
+	t_data	*d;
+	t_mtx	*fs;
+	t_philo	*ps;
 
 	if (!(argc == 5 || argc == 6) || ft_check_argv(argv) == false)
+	{
+		printf("Error!\nWrong input\n");
 		return (1);
-	d = ft_prase_input(argc, argv);
+	}
+	d = ft_parse_input(argc, argv);
 	if (!d)
-		return (write(2, "Memory allocation error\n", 25), 1);
-	ft_init_forks(fs, d->nbr_of_philos);
-	ft_init_philos(ps, &d, fs, argv);
-	thread_create(&d, fs);
-	ft_free_all(fs, &d);
+	{
+		printf("Error!\nMemory allocation error\n");
+		return (1);
+	}
+	printf("d = %p\n", d);
+	fs = (t_mtx *)malloc(sizeof(t_mtx) * d->nbr_of_philos);
+	if (!fs)
+	{
+		ft_err_exit(d, "Memory allocation error");
+		return (1);
+	}
+	if (ft_init_forks(fs, d) == false)
+		return (1);
+	ps = (ft_init_philos(d, fs));
+	printf("ps[0].d = %p\n", ps[0].d);
+	if (!ps)
+		return (1);
+	d->ps = ps;
+	d->when_sim_started = ft_crnt_tm();
+	if (ft_thread_create(d) == false)
+		return (1);
+	ft_free_data(d);
 	return (0);
 }

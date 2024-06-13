@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:48:31 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/06/12 19:03:01 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:45:04 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 //			pthread_mutex_lock, pthread_mutex_unlock
 
 /*struct - for data transfer thoughout the program*/
+typedef struct s_data t_data;
 
 typedef pthread_mutex_t t_mtx;
 
@@ -41,6 +42,7 @@ typedef struct s_philo
 	t_mtx		*write_lock;
 	t_mtx		*death_lock;
 	t_mtx		*meal_lock;
+	t_data		*d;
 }			t_philo;
 
 typedef struct s_data
@@ -72,33 +74,34 @@ void	ft_think(t_philo *p, t_data *d);
 size_t	ft_atoi_pos_secured(const char *str);
 
 /*arg_check.c*/
-bool     ft_my_isdigit(int c);
-bool    ft_check_argv(const char **argv);
+bool	ft_my_isdigit(int c);
+bool	ft_check_argv(const char **argv);
 //char  *ft_strchr(const char *s, int c);
 
 
 /*free_exit.c*/
 void	ft_free_philos(t_philo *ps, size_t nbr_of_philos);
 void	ft_free_data(t_data *d);
-void    ft_free_all(t_philo *ps, t_data *d);
+void	ft_err_exit(t_data *d, const char *err_message);
+//void	ft_free_all(t_philo *ps, t_data *d);
 
 /*init_parse.c*/
-void	ft_init_forks(t_mtx *fs, size_t nbr_of_philos);
-void	ft_init_philos(t_philo *ps, t_data *d, t_mtx *fs, char **argv);
-t_data	*ft_parse_input(int argc, char **argv, t_philo *ps);
+bool	ft_init_forks(t_mtx *fs, t_data *d);
+t_philo	*ft_init_philos(t_data *d, t_mtx *fs);
+t_data	*ft_parse_input(int argc, const char **argv);
 
 /*monitoring.c*/
 bool	ft_is_philo_dead(t_philo *p, size_t time_to_die);
-bool	ft_has_anyone_died(t_philo *ps);
-bool    ft_have_all_eaten(t_philo *ps);
-void    *ft_monitoring(void *ptr);
+bool	ft_has_anyone_died(t_philo *ps, t_data *d);
+bool	ft_have_all_eaten(t_philo *ps, t_data *d);
+void	*ft_monitoring(void *ptr);
 
 /*!!!!!!philo.c!!!!!!*/
 
 /*threads.c*/
 bool    ft_death_loop(t_philo *p, t_data *d);
 void	*ft_philo_routine(void *ptr);
-int	ft_thread_create(t_data *d, t_mtx *fs);
+bool	ft_thread_create(t_data *d);
 
 /*utils_time.c*/
 size_t	ft_crnt_tm(void);
