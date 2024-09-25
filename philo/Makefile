@@ -14,7 +14,7 @@ NAME		= philo
 DIR_OBJS	= ./objs/
 INCLUDE		= philo.h
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -fsanitize=address# -g
+CFLAGS		= -Wall -Wextra -Werror -fsanitize=undefined -g
 RM			= rm -f
 
 #COLORS

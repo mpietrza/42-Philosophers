@@ -58,7 +58,7 @@ typedef struct s_data
 	t_mtx		write_lock;
 	t_mtx		death_lock;
 	t_mtx		meal_lock;
-	int		atoi_errno;
+	int			atoi_errno;
 	t_philo		*ps;
 }			t_data;
 
