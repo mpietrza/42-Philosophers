@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:18:01 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/09/25 16:59:44 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/09/30 14:52:47 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,34 +48,22 @@ bool	ft_thread_create(t_data *d)
 	size_t		i;
 
 	if (pthread_create(&controller, NULL, &ft_monitoring, &d->ps) != 0)
-	{
-		ft_err_exit(d, "Pthread_create error");
 		return (false);
-	}
 	i = 0;
 	while (i < d->nbr_of_philos)
 	{
-		if (pthread_create(&d->ps[i].thread_id, NULL, &ft_philo_routine,
+		if (pthread_create(&d->ps[i]->thread_id, NULL, &ft_philo_routine,
 					&d->ps[i]) != 0)
-		{
-			ft_err_exit(d, "Pthread_create error");
 			return (false);
-		}
 		i++;
 	}
 	i = 0;
 	if (pthread_join(controller, NULL) != 0)
-	{
-		ft_err_exit(d, "Pthread_join error");
 		return (false);
-	}
 	while (i < d->nbr_of_philos)
 	{
-		if (pthread_join(d->ps[i].thread_id, NULL) != 0)
-		{
-			ft_err_exit(d, "Pthread_join error");
+		if (pthread_join(d->ps[i]->thread_id, NULL) != 0)
 			return (false);
-		}
 		i++;
 	}
 	return (true);

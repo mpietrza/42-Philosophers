@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:52 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/09/25 17:32:36 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/09/30 15:33:15 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,11 @@ bool	ft_have_all_eaten(t_philo *ps, t_data *d)
 
 void	*ft_monitoring(void *ptr)
 {
-	t_philo *ps = NULL;
-	t_data	*d = NULL;
+	t_data	*d = (t_data *)ptr;
+	t_philo *ps = (t_philo *)d->ps;
 
-	d = (t_data *)ptr;
-	ps = &d->ps[0];
-	while (1)
-	{
-		if ((d != NULL && ps != NULL) || (ft_has_anyone_died(ps, d) == true
-				|| ft_have_all_eaten(ps, d) == true))
-			break;
-		usleep(1000);
-	}
+	while (d != NULL && ps != NULL && !ft_has_anyone_died(ps, d)
+			&& !ft_have_all_eaten(ps, d))
+		ft_usleep(1000);
 	return (ptr);
 }

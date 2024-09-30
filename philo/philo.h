@@ -35,7 +35,7 @@ typedef struct s_philo
 	size_t		philo_id;
 	bool		is_eating;
 	size_t		nbr_of_meals_eaten;
-	size_t		when_was_last_meal; 
+	time_t		when_was_last_meal; 
 	bool		*is_dead;
 	t_mtx		*fork_l;
 	t_mtx		*fork_r;
@@ -53,13 +53,13 @@ typedef struct s_data
 	size_t		tm_t_eat;	
 	size_t		tm_t_sleep;	
 	size_t		nbr_of_meals_per_philo; // if -1 = error; if -2 = no arg
-	size_t		when_sim_started;
+	time_t		when_sim_started;
 	bool		is_dead_flag;
 	t_mtx		write_lock;
 	t_mtx		death_lock;
 	t_mtx		meal_lock;
 	int			atoi_errno;
-	t_philo		*ps;
+	t_philo		**ps;
 }			t_data;
 
 
@@ -82,13 +82,13 @@ bool	ft_check_argv(const char **argv);
 /*free_exit.c*/
 void	ft_free_philos(t_philo *ps, size_t nbr_of_philos);
 void	ft_free_data(t_data *d);
-void	ft_err_exit(t_data *d, const char *err_message);
+int	ft_err_exit(t_data *d, t_mtx *fs, const char *err_message, int ret);
 //void	ft_free_all(t_philo *ps, t_data *d);
 
 /*init_parse.c*/
-bool	ft_init_forks(t_mtx *fs, t_data *d);
-t_philo	*ft_init_philos(t_data *d, t_mtx *fs);
-t_data	*ft_parse_input(int argc, const char **argv);
+bool	ft_init_forks(t_mtx *fs, size_t nbr_of_philos);
+t_philo	**ft_init_philos(t_data *d, t_mtx *fs);
+t_data	*ft_parse_input(int argc, const char **argv, t_mtx *fs);
 
 /*monitoring.c*/
 bool	ft_is_philo_dead(t_philo *p, size_t time_to_die);
@@ -106,5 +106,4 @@ bool	ft_thread_create(t_data *d);
 /*utils_time.c*/
 size_t	ft_crnt_tm(void);
 bool	ft_usleep(size_t millisecs);
-
 #endif
