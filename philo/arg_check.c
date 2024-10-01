@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   arg_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpietrza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:08:51 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/06/12 19:05:21 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:40:36 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool     ft_my_isdigit(int c)
+int     ft_my_isdigit(int c)
 {
 	if (c >= '0' && c <= '9')
-		return (true);
+		return (TRUE);
 	if (c == '+')
-		return (true);
+		return (TRUE);
 	if (c == ' ' || c == 9)
-		return (true);
-	return (false);
+		return (TRUE);
+	return (FALSE);
 }
 
 static void	ft_check_argv_err_message(int i)
@@ -41,7 +41,7 @@ static void	ft_check_argv_err_message(int i)
 	}
 }
 
-bool	ft_check_argv(const char **argv)
+int	ft_check_argv(const char **argv)
 {
 	int	i;
 	int	j;
@@ -52,23 +52,23 @@ bool	ft_check_argv(const char **argv)
 		j = 0;
 		while (argv[i][j])
 		{	
-			if (ft_my_isdigit(argv[i][j]) == false)
+			if (ft_my_isdigit(argv[i][j]) == FALSE)
 			{
 				ft_check_argv_err_message(i);
-				return (false);
+				return (FALSE);
 			}
 			j++;
 		}
 		i++;
 	}
-	return (true);
+	return (TRUE);
 }
 
 
 /*
 char	*ft_strchr(const char *s, int c)
 {
-	long	i;
+	int	i;
 
 	i = 0;
 	if (!s)

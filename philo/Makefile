@@ -39,6 +39,7 @@ SRCS			= actions.c \
 			  philo.c \
 			  threads.c\
 			  utils_time.c \
+			  utils.c
 			 
 OBJS		= $(addprefix $(DIR_OBJS), $(SRCS:.c=.o))
 

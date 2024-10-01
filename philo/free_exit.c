@@ -6,20 +6,20 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:08:14 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/09/30 14:13:47 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:56:32 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include  "philo.h"
 
-void	ft_free_philos(t_philo *ps, size_t nbr_of_philos)
+void	ft_free_philos(t_philo *ps, int nbr_of_philos)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	if (ps)
 	{
-		while (i < nbr_of_philos)
+		while (i < nbr_of_philos - 1)
 		{
 			if (ps[i].fork_l)
 				pthread_mutex_destroy(ps[i].fork_l);
@@ -31,14 +31,14 @@ void	ft_free_philos(t_philo *ps, size_t nbr_of_philos)
 	}
 }
 
-void	ft_free_forks(t_mtx *fs, size_t nbr_of_philos)
+void	ft_free_forks(t_mtx *fs, int nbr_of_philos)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	if (fs)
 	{
-		while (i < nbr_of_philos)
+		while (i < nbr_of_philos - 1)
 		{
 			pthread_mutex_destroy(&fs[i]);
 			i++;
@@ -69,16 +69,4 @@ int	ft_err_exit(t_data *d, t_mtx *fs, const char *err_message, int ret)
 		ft_free_forks(fs, d->nbr_of_philos);
 	return (ret);
 }
-/*
-void	ft_free_all(t_philo *ps, t_data *d)
-{
-	if (ps)
-	{
-		if (d)
-			ft_free_philos(ps, d->nbr_of_philos);
-		else
-			ft_free_philos(ps, 0);
-	}
-	if (d)
-		ft_free_data(d);
-}*/
+
