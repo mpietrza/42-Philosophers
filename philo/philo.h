@@ -95,7 +95,7 @@ void	ft_parse_input(int argc, const char **argv, t_data *d, t_mtx *fs);
 /*monitoring.c*/
 int	ft_is_philo_dead(t_philo *p, size_t time_to_die);
 int	ft_has_anyone_died(t_data *d);
-int	ft_have_all_eaten(t_data *d);
+int	ft_have_all_eaten(t_data *d, t_philo *ps);
 void	*ft_monitoring(void *ptr);
 
 /*!!!!!!philo.c!!!!!!*/

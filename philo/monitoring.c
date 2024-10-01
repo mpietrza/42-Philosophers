@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:52 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/01 18:21:34 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/01 19:42:13 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,15 @@
 
 int    ft_is_philo_dead(t_philo *p, size_t time_to_die)
 {
-        int	ret;
+    int	ret;
 	
 	ret = FALSE;
 	pthread_mutex_lock(p->meal_lock);
 	if (ft_crnt_tm() - p->when_was_last_meal >= time_to_die
 			&& p->is_eating == FALSE && !p->d->is_dead_flag)
 		ret = TRUE;
+	else
+		ret = FALSE;	
 	pthread_mutex_unlock(p->meal_lock);
 	return (ret);
 }
@@ -31,38 +33,31 @@ int    ft_has_anyone_died(t_data *d)
 
 	i = 0;
 	printf("Debug \"has anyone died\"\n");
-	if (d) 
+	while (i < d->nbr_of_philos)
 	{
-		
-		while (i < d->nbr_of_philos)
+		pthread_mutex_lock(&d->death_lock);
+		if (d->is_dead_flag)
 		{
-			pthread_mutex_lock(&d->death_lock);
-			if (d->is_dead_flag)
-			{
-				pthread_mutex_unlock(&d->death_lock);
-				return (TRUE);
-			}
 			pthread_mutex_unlock(&d->death_lock);
-
-			printf("Debug 2.%d\n", i);
-			if (ft_is_philo_dead(d->ps[i], d->tm_t_die) == TRUE)
-			{
-				printf("Debug 2.%d.dead\n", i);
-				ft_message("died", d->ps[i], d, d->ps[i]->philo_id);
-				pthread_mutex_lock(&d->death_lock);
-				d->is_dead_flag = TRUE;
-				pthread_mutex_unlock(&d->death_lock);
-				return (TRUE);
-			}
-			i++;
+			return (TRUE);
 		}
+		pthread_mutex_unlock(&d->death_lock);
+		printf("Debug 2.%d\n", i);
+		if (ft_is_philo_dead(d->ps[i], d->tm_t_die) == TRUE)
+		{
+			printf("Debug 2.%d.dead\n", i);
+			ft_message("died", d->ps[i], d, d->ps[i]->philo_id);
+			pthread_mutex_lock(&d->death_lock);
+			d->is_dead_flag = TRUE;
+			pthread_mutex_unlock(&d->death_lock);
+			return (TRUE);
+		}
+		i++;
 	}
-	else
-		exit(1);
 	return (FALSE);
 }
 
-int	ft_have_all_eaten(t_data *d)
+int	ft_have_all_eaten(t_data *d, t_philo *ps)
 {
 	int	i;
 	int	has_eaten_all;
@@ -75,19 +70,19 @@ int	ft_have_all_eaten(t_data *d)
 	if (d && d->nbr_of_meals_per_philo == -2)
 		return (FALSE);
 	ft_print_data(d);
-	while (d && i < d->nbr_of_philos - 1)
+	while (d && i < d->nbr_of_philos)
 	{
-		pthread_mutex_lock(&d->meal_lock);
+		pthread_mutex_lock(ps[i].meal_lock);
 		if (d->ps[i]->nbr_of_meals_eaten >= d->nbr_of_meals_per_philo)
 			has_eaten_all++;
-		pthread_mutex_unlock(&d->meal_lock);
+		pthread_mutex_unlock(ps[i].meal_lock);
 		i++;
 	}
 	if (has_eaten_all == d->nbr_of_philos)
 	{
-		pthread_mutex_lock(&d->death_lock);
+		pthread_mutex_lock(ps[i].death_lock);
 		d->is_dead_flag = TRUE;
-		pthread_mutex_unlock(&d->death_lock);
+		pthread_mutex_unlock(ps[i].death_lock);
 		return (TRUE);
 	}
 	return (FALSE);
@@ -95,20 +90,16 @@ int	ft_have_all_eaten(t_data *d)
 
 void	*ft_monitoring(void *ptr)
 {
-	t_data	*d = (t_data *)ptr;
-
-	printf("Debug: Monitoring started\n");
-	ft_print_data(d);
+	t_philo	*ps;
+	t_data	*d;
+	
+	ps = (t_philo *)ptr;
+	d = ps[0].d;
 	while (1)
 	{
-		pthread_mutex_lock(&d->death_lock);
-		if (d->is_dead_flag)
-		{
-			pthread_mutex_unlock(&d->death_lock);
+		if (ft_has_anyone_died(d) == TRUE)
 			break ;
-		}
-		pthread_mutex_unlock(&d->death_lock);
-		if (ft_has_anyone_died(d) || ft_have_all_eaten(d))
+		if (ft_have_all_eaten(d, ps) == TRUE)
 			break ;
 	}
 	return (ptr);

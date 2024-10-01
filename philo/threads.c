@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:18:01 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/01 18:27:55 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/01 19:37:44 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_thread_create(t_data *d)
 
 	nbr_of_philos = d->nbr_of_philos;
 
-	if (pthread_create(&controller, NULL, &ft_monitoring, &d->ps) != 0)
+	if (pthread_create(&controller, NULL, &ft_monitoring, d->ps) != 0)
 		return (FALSE);
 	i = 0;
 	while (i < nbr_of_philos)

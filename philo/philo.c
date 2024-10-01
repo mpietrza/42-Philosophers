@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 15:10:57 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/01 19:01:37 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/01 19:35:26 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	main(int argc, const char **argv)
 		return (ft_err_exit(d, fs, "Thread creation error", 1));
 	printf("Debug: Threads created\n");
 	ft_print_data(d);
-	if (ft_monitoring((void **)&d) == NULL)
+	if (ft_monitoring((void *)d) == NULL)
 		return (ft_err_exit(d, fs, "Thread monitoring error", 1));
 	printf("Debug: Monitoring completed\n");
 	ft_print_data(d);
