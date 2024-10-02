@@ -33,12 +33,18 @@ typedef pthread_mutex_t t_mtx;
 
 typedef struct s_philo
 {
-	pthread_t	thread_id; // a philo is a thread
-	int		philo_id;
-	int		is_eating;
-	int		nbr_of_meals_eaten;
+	pthread_t	philo_thread; // a philo is a thread
+	int			nbr_of_philos;
+	int			philo_id;
+	int			is_eating;
+	int			nbr_of_meals_eaten;
+	int 		nbr_of_meals_per_philo; // if -1 = error; if -1 = no arg
 	time_t		when_was_last_meal; 
-	int		*is_dead;
+	time_t		tm_t_die;
+	time_t		tm_t_eat;	
+	time_t		tm_t_sleep;	
+	time_t		when_sim_started;
+	int			*is_anyone_dead;
 	t_mtx		*fork_l;
 	t_mtx		*fork_r;
 	t_mtx		*write_lock;
@@ -49,14 +55,10 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	
+	const char			**argv;
+	int					argc;
 	int					nbr_of_philos;
-	unsigned long long	tm_t_die;
-	unsigned long long	tm_t_eat;	
-	unsigned long long	tm_t_sleep;	
-	int 				nbr_of_meals_per_philo; // if -1 = error; if -2 = no arg
-	unsigned long long	when_sim_started;
-	int					is_dead_flag;
+	int					is_anyone_dead_flag;
 	t_mtx				write_lock;
 	t_mtx				death_lock;
 	t_mtx				meal_lock;
@@ -67,10 +69,10 @@ typedef struct s_data
 
 /***************************** list of functions ******************************/
 /*actions.c*/
-void	ft_message(char *s, t_philo *p, t_data *d, int id);
-void	ft_eat(t_philo *p, t_data *d);
-void	ft_sleep(t_philo *p, t_data *d);
-void	ft_think(t_philo *p, t_data *d);
+void	ft_message(char *s, t_philo *p, int id);
+void	ft_eat(t_philo *p);
+void	ft_sleep(t_philo *p);
+void	ft_think(t_philo *p);
 
 /*atoi_secured.c*/
 size_t	ft_atoi_pos_secured(const char *str);
@@ -82,28 +84,29 @@ int	ft_check_argv(const char **argv);
 
 
 /*free_exit.c*/
-void	ft_free_philos(t_philo *ps, int nbr_of_philos);
+void	ft_free_philos(t_philo **ps);
 void	ft_free_data(t_data *d);
 int	ft_err_exit(t_data *d, t_mtx *fs, const char *err_message, int ret);
 //void	ft_free_all(t_philo *ps, t_data *d);
 
 /*init_parse.c*/
 int	ft_init_forks(t_mtx *fs, int nbr_of_philos);
-t_philo	**ft_init_philos(t_data *d, t_mtx *fs, int nbr_of_philos);
-void	ft_parse_input(int argc, const char **argv, t_data *d, t_mtx *fs);
+int	ft_init_philos(t_data *d, t_mtx *fs, t_philo **ps);
+void	ft_parse_input(int argc, const char **argv, t_data *d);
 
 /*monitoring.c*/
 int	ft_is_philo_dead(t_philo *p, size_t time_to_die);
-int	ft_has_anyone_died(t_data *d);
-int	ft_have_all_eaten(t_data *d, t_philo *ps);
+int	ft_has_anyone_died(t_philo **ps);
+int	ft_have_all_eaten(t_philo **ps);
 void	*ft_monitoring(void *ptr);
 
 /*!!!!!!philo.c!!!!!!*/
 
+
 /*threads.c*/
-int    ft_death_loop(t_philo *p, t_data *d);
+int    ft_death_loop(t_philo *p);
 void	*ft_philo_routine(void *ptr);
-int	ft_thread_create(t_data *d);
+int		ft_thread_create(t_philo **ps);
 
 /*utils_time.c*/
 unsigned long long	ft_crnt_tm(void);

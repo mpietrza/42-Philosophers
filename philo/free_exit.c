@@ -6,29 +6,41 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:08:14 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/01 17:56:32 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/02 21:50:30 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include  "philo.h"
 
-void	ft_free_philos(t_philo *ps, int nbr_of_philos)
+void	ft_free_philos(t_philo **ps)
 {
 	int	i;
 
 	i = 0;
 	if (ps)
 	{
-		while (i < nbr_of_philos - 1)
+		while (i < ps[i]->nbr_of_philos - 1)
 		{
-			if (ps[i].fork_l)
-				pthread_mutex_destroy(ps[i].fork_l);
-			if (ps[i].fork_r)
-				pthread_mutex_destroy(ps[i].fork_r);
+			if (ps[i]->philo_thread)
+				pthread_detach(ps[i]->philo_thread);
+			if (ps[i]->fork_l)
+				pthread_mutex_destroy(ps[i]->fork_l);
+			if (ps[i]->fork_r)
+				pthread_mutex_destroy(ps[i]->fork_r);
+			if (ps[i]->write_lock)
+				pthread_mutex_destroy(ps[i]->write_lock);
+			if (ps[i]->death_lock)
+				pthread_mutex_destroy(ps[i]->death_lock);
+			if (ps[i]->meal_lock)
+				pthread_mutex_destroy(ps[i]->meal_lock);
+			if (ps[i])
+				free(ps[i]);
 			i++;
 		}
-		free (ps);
+		//free(ps[i]);
+		free(ps);
 	}
+
 }
 
 void	ft_free_forks(t_mtx *fs, int nbr_of_philos)
@@ -55,7 +67,7 @@ void	ft_free_data(t_data *d)
 		pthread_mutex_destroy(&d->meal_lock);
 		pthread_mutex_destroy(&d->write_lock);
 		if (d->ps)
-			ft_free_philos(*d->ps, d->nbr_of_philos);
+			ft_free_philos(d->ps);
 		free(d);
 	}
 }
