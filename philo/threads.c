@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:18:01 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/02 21:21:29 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:57:40 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,13 @@ int	ft_thread_create(t_philo **ps)
 	pthread_t	controller;
 	int			i;
 
+	
+	if (pthread_create(&controller, NULL, &ft_monitoring, (void *)ps) != 0)
+		return (FALSE);
 	i = 0;
 	while (i < ps[0]->nbr_of_philos)
 	{
-		if (pthread_create(&ps[i]->philo_thread, NULL, &ft_philo_routine, &ps[i]->philo_thread) != 0)
+		if (pthread_create(&ps[i]->philo, NULL, &ft_philo_routine, &ps[i]/*->philo*/) != 0)
 			return (FALSE);
 		i++;
 	}
@@ -60,16 +63,14 @@ int	ft_thread_create(t_philo **ps)
 		ps[i]->when_was_last_meal = ps[i]->when_sim_started;
 		i++;
 	}
-	if (pthread_create(&controller, NULL, &ft_monitoring, (void *)ps) != 0)
-		return (FALSE);
+	if (pthread_join(controller, NULL) != 0)
+		return (FALSE);	
 	i = 0;
 	while (i < ps[0]->nbr_of_philos)
 	{
-		if (pthread_join(ps[i]->philo_thread, NULL) != 0)
+		if (pthread_join(ps[i]->philo, NULL) != 0)
 			return (FALSE);
 		i++;
 	}
-	if (pthread_join(controller, NULL) != 0)
-		return (FALSE);
 	return (TRUE);
 }

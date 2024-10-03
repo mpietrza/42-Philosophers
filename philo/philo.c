@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 15:10:57 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/02 21:21:42 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/03 16:05:31 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int ft_init_philos(t_data *d, t_mtx *fs, t_philo **ps)
 		ps[i]->death_lock = &d->death_lock;
 		ps[i]->meal_lock = &d->meal_lock;
 		ps[i]->d = d;
+		ps[i]->when_sim_started = ft_crnt_tm();
 		ft_assign_forks(ps[i], fs);
 		i++;
 	}

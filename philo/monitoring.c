@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:52 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/02 21:21:36 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:30:48 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,15 @@
 
 int    ft_is_philo_dead(t_philo *p, size_t time_to_die)
 {
-    int	ret;
-	
-	ret = FALSE;
 	pthread_mutex_lock(p->meal_lock);
 	if (ft_crnt_tm() - p->when_was_last_meal >= time_to_die
 			&& p->is_eating == FALSE)
-		ret = TRUE;
-	else
-		ret = FALSE;	
+	{
+		pthread_mutex_unlock(p->meal_lock);
+		return (TRUE);
+	}
 	pthread_mutex_unlock(p->meal_lock);
-	return (ret);
+	return (FALSE);
 }
 
 int    ft_has_anyone_died(t_philo **ps)
@@ -56,8 +54,6 @@ int	ft_have_all_eaten(t_philo **ps)
 		return (FALSE);
 	i = 0;
 	finished_eating = 0;
-	if (ps[0]->nbr_of_meals_per_philo == -1)
-		return (FALSE);
 	while (i < ps[0]->nbr_of_philos)
 	{
 		pthread_mutex_lock(ps[i]->meal_lock);
@@ -85,8 +81,10 @@ void	*ft_monitoring(void *ptr)
 	{
 		if (ft_has_anyone_died(ps) == TRUE)
 			break ;
-		if (ft_have_all_eaten(ps) == TRUE)
-			break ;
+		else if (ps[0]->nbr_of_meals_per_philo != -1)
+			if (ft_have_all_eaten(ps) == TRUE)
+				break ;
+		ft_usleep(10);
 	}
 	return (ptr);
 }

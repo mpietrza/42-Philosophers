@@ -33,7 +33,7 @@ typedef pthread_mutex_t t_mtx;
 
 typedef struct s_philo
 {
-	pthread_t	philo_thread; // a philo is a thread
+	pthread_t	philo; // a philo is a thread
 	int			nbr_of_philos;
 	int			philo_id;
 	int			is_eating;
