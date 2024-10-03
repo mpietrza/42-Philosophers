@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:18:01 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/03 17:57:40 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:54:53 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	ft_thread_create(t_philo **ps)
 	i = 0;
 	while (i < ps[0]->nbr_of_philos)
 	{
-		if (pthread_create(&ps[i]->philo, NULL, &ft_philo_routine, &ps[i]/*->philo*/) != 0)
+		if (pthread_create(&ps[i]->philo, NULL, &ft_philo_routine, &ps[i]->philo) != 0)
 			return (FALSE);
 		i++;
 	}
