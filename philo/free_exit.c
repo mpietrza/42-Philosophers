@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:08:14 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/03 17:54:42 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/04 15:40:58 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_free_philos(t_philo **ps)
 		while (i < ps[i]->nbr_of_philos - 1)
 		{
 			if (ps[i]->philo)
-				pthread_detach(ps[i]->philo);
+				ps[i]->philo = 0;
 			if (ps[i]->fork_l)
 				pthread_mutex_destroy(ps[i]->fork_l);
 			if (ps[i]->fork_r)
@@ -31,6 +31,8 @@ void	ft_free_philos(t_philo **ps)
 				pthread_mutex_destroy(ps[i]->write_lock);
 			if (ps[i]->death_lock)
 				pthread_mutex_destroy(ps[i]->death_lock);
+			if (ps[i]->meal_lock)
+				pthread_mutex_destroy(ps[i]->meal_lock);
 			if (ps[i]->meal_lock)
 				pthread_mutex_destroy(ps[i]->meal_lock);
 			if (ps[i])

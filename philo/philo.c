@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 15:10:57 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/03 16:05:31 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/04 15:44:43 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, const char **argv)
 
 	if (!(argc == 5 || argc == 6) || ft_check_argv(argv) == FALSE)
 		return (ft_err_exit(NULL, NULL, "Wrong input", 1));
-	nbr_of_philos = (int)ft_atoi_pos_secured(argv[1]);
+	nbr_of_philos = (int)ft_atos_t_positive(argv[1]);
 	fs = (t_mtx *)malloc(sizeof(t_mtx) * nbr_of_philos);
 	if (!fs)
 		return (ft_err_exit(NULL, NULL, "Memory allocation error", 1));
@@ -71,19 +71,21 @@ int ft_init_philos(t_data *d, t_mtx *fs, t_philo **ps)
 			return (FALSE);
 		}
 		ps[i]->nbr_of_philos = d->nbr_of_philos;
-		ps[i]->tm_t_die = (time_t)ft_atoi_pos_secured(d->argv[2]);
-		ps[i]->tm_t_eat = (time_t)ft_atoi_pos_secured(d->argv[3]);
-		ps[i]->tm_t_sleep = (unsigned long long)ft_atoi_pos_secured(d->argv[4]);
+		ps[i]->tm_t_die = (time_t)ft_atos_t_positive(d->argv[2]);
+		ps[i]->tm_t_eat = (time_t)ft_atos_t_positive(d->argv[3]);
+		ps[i]->tm_t_sleep = (unsigned long long)ft_atos_t_positive(d->argv[4]);
 		if (d->argc == 6)
-			ps[i]->nbr_of_meals_per_philo = (int)ft_atoi_pos_secured(d->argv[5]);
+			ps[i]->nbr_of_meals_per_philo = (int)ft_atos_t_positive(d->argv[5]);
 		else
 			ps[i]->nbr_of_meals_per_philo = -1;
 		ps[i]->philo_id = i + 1;
 		ps[i]->is_eating = FALSE;
 		ps[i]->nbr_of_meals_eaten = 0;
 		ps[i]->is_anyone_dead = &d->is_anyone_dead_flag;
+		ps[i]->are_all_full = &d->are_all_full_flag;
 		ps[i]->write_lock = &d->write_lock;
 		ps[i]->death_lock = &d->death_lock;
+		ps[i]->full_lock = &d->full_lock;
 		ps[i]->meal_lock = &d->meal_lock;
 		ps[i]->d = d;
 		ps[i]->when_sim_started = ft_crnt_tm();
@@ -116,10 +118,11 @@ void	ft_parse_input(int argc, const char **argv, t_data *d)
 {
 	d->argv = argv;
 	d->argc = argc;
-	d->nbr_of_philos = (int)ft_atoi_pos_secured(argv[1]);
+	d->nbr_of_philos = (int)ft_atos_t_positive(argv[1]);
 	d->is_anyone_dead_flag = FALSE;
 	pthread_mutex_init(&d->write_lock, NULL);
 	pthread_mutex_init(&d->death_lock, NULL);
+	pthread_mutex_init(&d->full_lock, NULL);
 	pthread_mutex_init(&d->meal_lock, NULL);
 	d->atoi_errno = 0;
 }

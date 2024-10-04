@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:18:01 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/03 17:54:53 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/04 15:42:22 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ int	ft_death_loop(t_philo *p)
 	if (*p->is_anyone_dead == TRUE)
 		ret = TRUE;
 	pthread_mutex_unlock(p->death_lock);
+	pthread_mutex_lock(p->full_lock);
+	if (*p->are_all_full == TRUE)
+		ret = TRUE;
+	pthread_mutex_unlock(p->full_lock);
 	return (ret);
 }
 

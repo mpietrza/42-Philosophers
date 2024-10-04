@@ -45,10 +45,12 @@ typedef struct s_philo
 	time_t		tm_t_sleep;	
 	time_t		when_sim_started;
 	int			*is_anyone_dead;
+	int			*are_all_full;
 	t_mtx		*fork_l;
 	t_mtx		*fork_r;
 	t_mtx		*write_lock;
 	t_mtx		*death_lock;
+	t_mtx		*full_lock;
 	t_mtx		*meal_lock;
 	t_data		*d;
 }			t_philo;
@@ -59,8 +61,10 @@ typedef struct s_data
 	int					argc;
 	int					nbr_of_philos;
 	int					is_anyone_dead_flag;
+	int					are_all_full_flag;
 	t_mtx				write_lock;
 	t_mtx				death_lock;
+	t_mtx				full_lock;
 	t_mtx				meal_lock;
 	int					atoi_errno;
 	t_philo				**ps;
@@ -75,7 +79,7 @@ void	ft_sleep(t_philo *p);
 void	ft_think(t_philo *p);
 
 /*atoi_secured.c*/
-size_t	ft_atoi_pos_secured(const char *str);
+size_t	ft_atos_t_positive(const char *str);
 
 /*arg_check.c*/
 int	ft_my_isdigit(int c);

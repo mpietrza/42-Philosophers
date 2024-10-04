@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:33:38 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/01 18:39:49 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/04 14:51:07 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	ft_usleep(size_t millisecs)
 			return (FALSE);
 		if (so_far - start >= millisecs)
 			break ;
-		usleep(500);
 	}
 	return (TRUE);
 }

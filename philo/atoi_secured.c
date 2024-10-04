@@ -27,7 +27,7 @@ static int	ft_skip_blanks_and_sign(const char *str)
 	return (i);
 }
 
-size_t	ft_atoi_pos_secured(const char *str)
+size_t	ft_atos_t_positive(const char *str)
 {
 	int	i;
 	size_t	result;
@@ -41,7 +41,7 @@ size_t	ft_atoi_pos_secured(const char *str)
 		result = result * 10 + str[i] - '0';
 		i++;
 	}
-	if (result > INT_MAX)
+	if (result > SIZE_MAX)
 		return (-1);
 	return (result);
 }
