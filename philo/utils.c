@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:31:12 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/02 21:23:03 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/08 17:50:03 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,5 @@ void ft_print_data(t_data *d)
 	printf("d->write_lock = %p\n", (void *)&(d->write_lock));
 	printf("d->death_lock = %p\n", (void *)&(d->death_lock));
 	printf("d->meal_lock = %p\n", (void *)&(d->meal_lock));
-
 }
 

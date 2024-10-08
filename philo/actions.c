@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 17:08:28 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/04 16:23:02 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/08 19:47:22 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 void	ft_message(char *s, t_philo *p, int id)
 {
-	unsigned long long	time;
-
-	pthread_mutex_lock(p->write_lock);
+	size_t	time;
+	
 	if (p->when_sim_started <= (long long)ft_crnt_tm()) 
 		time = ft_crnt_tm() - p->when_sim_started;
 	else
@@ -25,8 +24,11 @@ void	ft_message(char *s, t_philo *p, int id)
 		time = 0;    
 	}
 	if (!ft_death_loop(p))
-		printf("%llu %d %s\n", time, id, s);
-	pthread_mutex_unlock(p->write_lock);	
+	{
+		pthread_mutex_lock(p->write_lock);
+		printf("%zu %d %s\n", time, id, s);
+		pthread_mutex_unlock(p->write_lock);
+	}
 }
 
 void ft_fork_mutex_unlock(t_philo *p, int is_fork_l, int is_fork_r)
@@ -44,7 +46,7 @@ void	ft_eat(t_philo *p)
 		if (pthread_mutex_lock(p->fork_r) != 0)
 			return ;
 		ft_message("has taken a fork", p, p->philo_id);
-		ft_usleep(p->tm_t_eat);
+		ft_usleep(p->tm_t_die);
 		pthread_mutex_unlock(p->fork_r);
 		return ;
 	}
@@ -65,16 +67,16 @@ void	ft_eat(t_philo *p)
 			return (ft_fork_mutex_unlock(p, FALSE, TRUE));
 	}
 	ft_message("has taken a fork", p, p->philo_id);
-	if (pthread_mutex_lock(p->meal_lock) != 0)
-		return (ft_fork_mutex_unlock(p, TRUE, TRUE));
 	p->is_eating = TRUE;
 	ft_message("is eating", p, p->philo_id);
+	if (pthread_mutex_lock(p->meal_lock) != 0)
+		return (ft_fork_mutex_unlock(p, TRUE, TRUE));
+	p->nbr_of_meals_eaten++;
 	pthread_mutex_unlock(p->meal_lock);
 	ft_usleep(p->tm_t_eat);	
 	if (pthread_mutex_lock(p->meal_lock) != 0)
 		return (ft_fork_mutex_unlock(p, TRUE, TRUE));
-	p->when_was_last_meal = ft_crnt_tm();
-	p->nbr_of_meals_eaten++;
+	p->when_was_last_meal = ft_crnt_tm();	
 	p->is_eating = FALSE;
 	pthread_mutex_unlock(p->meal_lock);
 	ft_fork_mutex_unlock(p, TRUE, TRUE);

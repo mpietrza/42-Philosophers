@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:33:38 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/04 14:51:07 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/08 17:50:03 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ unsigned long long	ft_crnt_tm(void)
 	size_t			crnt_tm;
 
 	if (gettimeofday(&time, NULL) == -1)
-	{
 		ft_err_exit(NULL, NULL, "gettimeofday error", 22);
-	}
 	crnt_tm = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	return (crnt_tm);
 }
