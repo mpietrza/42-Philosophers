@@ -6,24 +6,12 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:52 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/08 19:41:54 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/09 18:33:11 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int    ft_is_philo_dead(t_philo *p)
-{
-	pthread_mutex_lock(p->meal_lock);
-	if ((time_t)(ft_crnt_tm() - p->when_was_last_meal) >= p->tm_t_die
-			&& p->is_eating == FALSE)
-	{
-		pthread_mutex_unlock(p->meal_lock);
-		return (TRUE);
-	}
-	pthread_mutex_unlock(p->meal_lock);
-	return (FALSE);
-}
 
 int    ft_has_anyone_died(t_philo **ps)
 {
@@ -32,19 +20,28 @@ int    ft_has_anyone_died(t_philo **ps)
 	i = 0;
 	while (i < ps[0]->nbr_of_philos)
 	{
-	//	ft_usleep(100);
-		if (ft_is_philo_dead(ps[i]) == TRUE)
+		ft_usleep(10);
+		if ((ft_crnt_tm() - ft_get_when_was_last_meal(ps[i]) >= ps[0]->tm_t_die)
+			&& ft_get_is_eating(ps[i]) == FALSE)
 		{
-			ft_message("died", *ps, ps[i]->philo_id);
-			pthread_mutex_lock(ps[i]->death_lock);
-			*ps[i]->is_anyone_dead = TRUE;
-			pthread_mutex_unlock(ps[i]->death_lock);
+			ft_message("\033[1;31mdied\033[0m", *ps, ps[i]->philo_id);
+			ft_set_waiter_state(ps[0], CLEANING);
 			return (TRUE);
 		}
 		i++;
 	}
 	return (FALSE);
 }
+
+static void ft_increment_finished_eating_counter(t_philo *p,
+	int *finished_eating)
+{
+	pthread_mutex_lock(p->meal_lock);
+	if (p->nbr_of_meals_eaten >= p->nbr_of_meals_per_philo)
+		(*finished_eating)++;
+	pthread_mutex_unlock(p->meal_lock);
+}
+
 int ft_have_all_eaten(t_philo **ps)
 {
 	int i;
@@ -56,15 +53,9 @@ int ft_have_all_eaten(t_philo **ps)
 	finished_eating = 0;
 	while (i < ps[0]->nbr_of_philos)
 	{
-		pthread_mutex_lock(ps[i]->meal_lock);
-		if (ps[i]->nbr_of_meals_eaten >= ps[i]->nbr_of_meals_per_philo)
-			finished_eating++;
-		pthread_mutex_unlock(ps[i]->meal_lock);
-		//printf("ps[%d]->nbr_of_meals_eaten = %d\n", i, ps[i]->nbr_of_meals_eaten);
-		ft_usleep(5);
+		ft_increment_finished_eating_counter(ps[i], &finished_eating);
 		i++;
 	}
-	//printf("finished_eating = %d\n", finished_eating);
 	return (finished_eating);
 }
 
@@ -76,15 +67,18 @@ void	*ft_monitoring(void *ptr)
 	while (1)
 	{
 		if (ft_has_anyone_died(ps) == TRUE)
+		{
+			ft_set_waiter_state(ps[0], CLEANING);
 			break ;
-		else if (ps[0]->nbr_of_meals_per_philo > 0)
+		}
+		else if (ps[0]->nbr_of_meals_per_philo != -1)
+		{
 			if (ft_have_all_eaten(ps) == ps[0]->nbr_of_philos)
-			{
-				pthread_mutex_lock(ps[0]->full_lock);
-				*ps[0]->are_all_full = TRUE;
-				pthread_mutex_unlock(ps[0]->full_lock);
+			{	
+				ft_set_waiter_state(ps[0], CLEANING);
 				break ;
 			}
+		}
 	}
 	return (ptr);
 }

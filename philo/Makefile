@@ -14,7 +14,7 @@ NAME		= philo
 DIR_OBJS	= ./objs/
 INCLUDE		= philo.h
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror #-g -fsanitize=thread
 RM			= rm -f
 
 #COLORS
@@ -36,10 +36,13 @@ SRCS			= actions.c \
 			  free_exit.c \
 			  init_parse.c \
 			  monitoring.c \
+			  mtx_getters.c \
+			  mtx_setters.c \
 			  philo.c \
+			  routine.c \
 			  threads.c\
 			  utils_time.c \
-			  utils.c
+			  utils.c 
 			 
 OBJS		= $(addprefix $(DIR_OBJS), $(SRCS:.c=.o))
 

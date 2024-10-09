@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:08:14 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/04 15:40:58 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/09 18:25:25 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@ void	ft_free_philos(t_philo **ps)
 	i = 0;
 	if (ps)
 	{
+		if (ps[0]->w)
+		{
+			if (ps[0]->w->waiter_lock)
+				pthread_mutex_destroy(ps[0]->w->waiter_lock);
+			free(ps[0]->w);
+		}
 		while (i < ps[i]->nbr_of_philos - 1)
 		{
 			if (ps[i]->philo)
@@ -29,10 +35,6 @@ void	ft_free_philos(t_philo **ps)
 				pthread_mutex_destroy(ps[i]->fork_r);
 			if (ps[i]->write_lock)
 				pthread_mutex_destroy(ps[i]->write_lock);
-			if (ps[i]->death_lock)
-				pthread_mutex_destroy(ps[i]->death_lock);
-			if (ps[i]->meal_lock)
-				pthread_mutex_destroy(ps[i]->meal_lock);
 			if (ps[i]->meal_lock)
 				pthread_mutex_destroy(ps[i]->meal_lock);
 			if (ps[i])
@@ -70,7 +72,6 @@ void	ft_free_data(t_data *d)
 {
 	if (d)
 	{
-		pthread_mutex_destroy(&d->death_lock);
 		pthread_mutex_destroy(&d->meal_lock);
 		pthread_mutex_destroy(&d->write_lock);
 		if (d->ps)

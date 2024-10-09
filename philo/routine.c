@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/01 16:31:12 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/09 18:25:31 by mpietrza         ###   ########.fr       */
+/*   Created: 2024/10/09 18:34:56 by mpietrza          #+#    #+#             */
+/*   Updated: 2024/10/09 18:35:23 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void ft_print_data(t_data *d)
+void	*ft_philo_routine(void *ptr)
 {
-	printf("d->nbr_of_philos = %d\n", d->nbr_of_philos);
-	printf("d->write_lock = %p\n", (void *)&(d->write_lock));
-	printf("d->meal_lock = %p\n", (void *)&(d->meal_lock));
+	t_philo	*p;
+
+	p = (t_philo *)ptr;
+	while (1)
+	{
+		if (ft_eat(p) == FALSE)
+			break ;
+		if (ft_sleep(p) == FALSE)
+			break ;
+		if (ft_think(p) == FALSE)
+			break ;
+	}
+	return (ptr);
 }
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	len;
-
-	len = 0;
-	while (str[len])
-		len++;
-	return (len);
-}
-

@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   mtx_setters.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/01 16:31:12 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/09 18:25:31 by mpietrza         ###   ########.fr       */
+/*   Created: 2024/10/09 17:46:46 by mpietrza          #+#    #+#             */
+/*   Updated: 2024/10/09 18:22:51 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void ft_print_data(t_data *d)
+void	ft_set_waiter_state(t_philo *p, int state)
 {
-	printf("d->nbr_of_philos = %d\n", d->nbr_of_philos);
-	printf("d->write_lock = %p\n", (void *)&(d->write_lock));
-	printf("d->meal_lock = %p\n", (void *)&(d->meal_lock));
+	pthread_mutex_lock(p->w->waiter_lock);
+	p->w->state = state;
+	pthread_mutex_unlock(p->w->waiter_lock);
 }
 
-size_t	ft_strlen(const char *str)
-{
-	size_t	len;
 
-	len = 0;
-	while (str[len])
-		len++;
-	return (len);
-}
 
