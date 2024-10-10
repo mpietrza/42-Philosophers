@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 17:08:28 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/09 18:14:11 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/10 16:25:41 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,16 @@ int	ft_message(char *s, t_philo *p, int id)
 	if (ft_get_waiter_state(p) != SERVING)
 		return (FALSE);
 	time = ft_crnt_tm() - *p->when_sim_started;
-	pthread_mutex_lock(p->write_lock);
-	printf("%zu %d %s\n", time, id, s);
-	pthread_mutex_unlock(p->write_lock);
+
+	ft_usleep(100);
 	return (TRUE);
 }
 
 void ft_fork_mutex_unlock(t_philo *p, int is_fork_l, int is_fork_r)
 {
-	if (is_fork_l)
+	if (is_fork_l && p->fork_l)
 		pthread_mutex_unlock(p->fork_l);
-	if (is_fork_r)
+	if (is_fork_r && p->fork_r)
 		pthread_mutex_unlock(p->fork_r);
 }
 
@@ -115,7 +114,7 @@ int	ft_eat(t_philo *p)
 		if (ft_take_forks(p, RIGHT_LEFT) == FALSE)
 			return (FALSE);
 	ft_message("has taken a fork", p, p->philo_id);
-		ft_message("is eating", p, p->philo_id);
+	ft_message("is eating", p, p->philo_id);
 	if (ft_increment_meal_counter(p) == FALSE)
 		return (FALSE);
 	ft_usleep(p->tm_t_eat);		
@@ -142,3 +141,14 @@ int	ft_think(t_philo *p)
 	ft_message("is thinking", p, p->philo_id);
 		return (TRUE);
 }
+/*
+int ft_check_if_philo_is_still_alive(t_philo *p)
+{
+	if (ft_crnt_tm() - ft_get_when_was_last_meal(p) >= p->tm_t_die)
+	{
+		ft_message("\033[1;31mdied\033[0m", p, p->philo_id);
+		ft_set_waiter_state(p, CLEANING);
+		return (FALSE);
+	}
+	return (TRUE);
+}*/

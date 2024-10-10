@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:08:14 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/09 18:25:25 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/10 14:48:16 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ void	ft_free_philos(t_philo **ps)
 		if (ps[0]->w)
 		{
 			if (ps[0]->w->waiter_lock)
+			{
 				pthread_mutex_destroy(ps[0]->w->waiter_lock);
+				free(ps[0]->w->waiter_lock);
+			}
 			free(ps[0]->w);
 		}
 		while (i < ps[i]->nbr_of_philos - 1)

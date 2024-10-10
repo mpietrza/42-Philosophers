@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:37:45 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/09 18:12:01 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/10 15:32:17 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	ft_get_waiter_state(t_philo *p)
 	pthread_mutex_lock(p->w->waiter_lock);
 	state = p->w->state;
 	pthread_mutex_unlock(p->w->waiter_lock);
+	//ft_usleep(1);
 	return (state);
 }
 

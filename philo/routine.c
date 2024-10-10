@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:34:56 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/09 18:35:23 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/10 15:33:58 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,11 @@ void	*ft_philo_routine(void *ptr)
 	p = (t_philo *)ptr;
 	while (1)
 	{
-		if (ft_eat(p) == FALSE)
+		ft_eat(p);
+		if (ft_get_waiter_state(p) != SERVING)
 			break ;
-		if (ft_sleep(p) == FALSE)
-			break ;
-		if (ft_think(p) == FALSE)
-			break ;
+		ft_sleep(p);
+		ft_think(p);
 	}
 	return (ptr);
 }

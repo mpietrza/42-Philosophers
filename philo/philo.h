@@ -82,6 +82,7 @@ int		ft_message(char *s, t_philo *p, int id);
 int		ft_eat(t_philo *p);
 int		ft_sleep(t_philo *p);
 int		ft_think(t_philo *p);
+//int		ft_check_if_philo_is_still_alive(t_philo *p);
 
 /*atoi_secured.c*/
 size_t	ft_atos_t_positive(const char *str);
