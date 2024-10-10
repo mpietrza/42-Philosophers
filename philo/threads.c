@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: milosz <milosz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:18:01 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/09 18:35:41 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/10 22:39:18 by milosz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_thread_create(t_philo **ps)
 	ft_assign_time_and_start(ps);
 	while (i < ps[0]->nbr_of_philos)
 	{
-		if (pthread_create(&ps[i]->philo, NULL, &ft_philo_routine, &ps[i]->philo) != 0)
+		if (pthread_create(&ps[i]->philo, NULL, &ft_philo_routine, ps[i]) != 0)
 			return (FALSE);
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: milosz <milosz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 17:08:28 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/10 16:25:41 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/10 22:23:59 by milosz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,21 @@
 int	ft_message(char *s, t_philo *p, int id)
 {
 	size_t	time;
-	
-	if (ft_get_waiter_state(p) != SERVING)
-		return (FALSE);
-	time = ft_crnt_tm() - *p->when_sim_started;
+	char	*time_str;
+	char	*id_str;
 
-	ft_usleep(100);
+	id_str = ft_itoa(id);
+	time = ft_crnt_tm() - *p->when_sim_started;
+	time_str = ft_itoa(time);
+	pthread_mutex_lock(p->write_lock);
+	p->d->msg = ft_join_3_str(time_str, id_str, s);
+	if (p->d->msg == NULL)
+	{
+		pthread_mutex_unlock(p->write_lock);
+		return (FALSE);
+	}
+	p->d->msg_nbr++;
+	pthread_mutex_unlock(p->write_lock);
 	return (TRUE);
 }
 

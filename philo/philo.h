@@ -61,6 +61,8 @@ typedef struct s_philo
 typedef struct s_data
 {
 	const char			**argv;
+	char				*msg;
+	size_t				msg_nbr;
 	int					argc;
 	int					nbr_of_philos;
 	t_mtx				write_lock;
@@ -132,5 +134,10 @@ int		ft_usleep(time_t millisecs);
 /*utils.c*/
 void	ft_print_data(t_data *d);
 size_t	ft_strlen(const char *str);
+char	*ft_strjoin_space(char const *s1, char const *s2);
+char	*ft_join_3_str(char *s1, char *s2, char *s3);
+
+/*utils_itoa.c*/
+char	*ft_itoa(int n);
 
 #endif

@@ -14,7 +14,7 @@ NAME		= philo
 DIR_OBJS	= ./objs/
 INCLUDE		= philo.h
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror #-g -fsanitize=thread
+CFLAGS		= -Wall -Wextra -Werror -g -fsanitize=address
 RM			= rm -f
 
 #COLORS
@@ -41,6 +41,7 @@ SRCS			= actions.c \
 			  philo.c \
 			  routine.c \
 			  threads.c\
+			  utils_itoa.c \
 			  utils_time.c \
 			  utils.c 
 			 
