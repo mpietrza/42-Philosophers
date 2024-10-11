@@ -3,34 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: milosz <milosz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 17:08:28 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/10 22:23:59 by milosz           ###   ########.fr       */
+/*   Updated: 2024/10/11 19:17:44 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_message(char *s, t_philo *p, int id)
+void	ft_message(int msg, t_philo *p, int id)
 {
-	size_t	time;
-	char	*time_str;
-	char	*id_str;
-
-	id_str = ft_itoa(id);
-	time = ft_crnt_tm() - *p->when_sim_started;
-	time_str = ft_itoa(time);
 	pthread_mutex_lock(p->write_lock);
-	p->d->msg = ft_join_3_str(time_str, id_str, s);
-	if (p->d->msg == NULL)
-	{
-		pthread_mutex_unlock(p->write_lock);
-		return (FALSE);
-	}
-	p->d->msg_nbr++;
+	p->d->msg_id = id;
+	p->d->msg = msg;
+	p->d->msg_counter++;
 	pthread_mutex_unlock(p->write_lock);
-	return (TRUE);
+	usleep(10);
 }
 
 void ft_fork_mutex_unlock(t_philo *p, int is_fork_l, int is_fork_r)
@@ -45,7 +34,7 @@ static void ft_one_philo(t_philo *p)
 {
 	if (pthread_mutex_lock(p->fork_r) != 0)
 		return ;
-	ft_message("has taken a fork", p, p->philo_id);
+	ft_message(TAKEN_FORK, p, p->philo_id);
 	ft_usleep(p->tm_t_die);
 	pthread_mutex_unlock(p->fork_r);
 }
@@ -82,7 +71,7 @@ static int ft_take_forks(t_philo *p, int lr_or_rl)
 	{
 		if (pthread_mutex_lock(p->fork_l) != 0)
 			return (FALSE);
-		ft_message("has taken a fork", p, p->philo_id);
+		ft_message(TAKEN_FORK, p, p->philo_id);
 		if (pthread_mutex_lock(p->fork_r) != 0)
 		{
 			ft_fork_mutex_unlock(p, TRUE, FALSE);
@@ -93,7 +82,7 @@ static int ft_take_forks(t_philo *p, int lr_or_rl)
 	{
 		if (pthread_mutex_lock(p->fork_r) != 0)
 			return (FALSE);
-		ft_message("has taken a fork", p, p->philo_id);
+		ft_message(TAKEN_FORK, p, p->philo_id);
 		if (pthread_mutex_lock(p->fork_l) != 0)
 		{
 			ft_fork_mutex_unlock(p, FALSE, TRUE);
@@ -122,8 +111,8 @@ int	ft_eat(t_philo *p)
 	else
 		if (ft_take_forks(p, RIGHT_LEFT) == FALSE)
 			return (FALSE);
-	ft_message("has taken a fork", p, p->philo_id);
-	ft_message("is eating", p, p->philo_id);
+	ft_message(TAKEN_FORK, p, p->philo_id);
+	ft_message(EATING, p, p->philo_id);
 	if (ft_increment_meal_counter(p) == FALSE)
 		return (FALSE);
 	ft_usleep(p->tm_t_eat);		
@@ -138,7 +127,7 @@ int	ft_sleep(t_philo *p)
 {
 	if (ft_get_waiter_state(p) != SERVING)
 		return (FALSE);
-	ft_message("is sleeping", p, p->philo_id);
+	ft_message(SLEEPING, p, p->philo_id);
 	ft_usleep(p->tm_t_sleep);
 	return (TRUE);
 }
@@ -147,17 +136,7 @@ int	ft_think(t_philo *p)
 {
 	if (ft_get_waiter_state(p) != SERVING)
 		return (FALSE);
-	ft_message("is thinking", p, p->philo_id);
+	ft_message(THINKING, p, p->philo_id);
 		return (TRUE);
 }
-/*
-int ft_check_if_philo_is_still_alive(t_philo *p)
-{
-	if (ft_crnt_tm() - ft_get_when_was_last_meal(p) >= p->tm_t_die)
-	{
-		ft_message("\033[1;31mdied\033[0m", p, p->philo_id);
-		ft_set_waiter_state(p, CLEANING);
-		return (FALSE);
-	}
-	return (TRUE);
-}*/
+

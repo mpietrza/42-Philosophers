@@ -19,6 +19,11 @@
 # define CLEANING 2
 # define LEFT_RIGHT 0
 # define RIGHT_LEFT 1
+# define TAKEN_FORK 0
+# define EATING 1
+# define SLEEPING 2
+# define THINKING 3
+# define DIED 4
 
 # include <unistd.h> //write, usleep
 # include <limits.h> //INT_MAX in ft_atoi_secured
@@ -61,8 +66,10 @@ typedef struct s_philo
 typedef struct s_data
 {
 	const char			**argv;
-	char				*msg;
-	size_t				msg_nbr;
+	//time_t				msg_time;
+	int					msg_id;
+	int					msg;
+	size_t				msg_counter;
 	int					argc;
 	int					nbr_of_philos;
 	t_mtx				write_lock;
@@ -80,7 +87,7 @@ typedef struct s_waiter
 
 /***************************** list of functions ******************************/
 /*actions.c*/
-int		ft_message(char *s, t_philo *p, int id);
+void	ft_message(int msg, t_philo *p, int id);
 int		ft_eat(t_philo *p);
 int		ft_sleep(t_philo *p);
 int		ft_think(t_philo *p);
@@ -101,7 +108,7 @@ int		ft_err_exit(t_data *d, t_mtx *fs, const char *err_message, int ret);
 /*init_parse.c*/
 int		ft_init_forks(t_mtx *fs, int nbr_of_philos);
 int		ft_init_philos(t_data *d, t_mtx *fs, t_waiter *w, t_philo **ps);
-void	ft_parse_input(int argc, const char **argv, t_data *d);
+int		ft_parse_input(int argc, const char **argv, t_data *d);
 int		ft_init_waiter(t_waiter *w);
 void	ft_assign_time_and_start(t_philo **ps);
 
@@ -115,6 +122,8 @@ void	*ft_monitoring(void *ptr);
 int		ft_get_waiter_state(t_philo *p);
 time_t	ft_get_when_was_last_meal(t_philo *p);
 int 	ft_get_is_eating(t_philo *p);
+int		ft_get_msg(t_philo *p);
+void	ft_get_msg_and_print(t_philo *p, size_t *msg_counter_prev);
 
 /*mtx_setters.c*/
 void	ft_set_waiter_state(t_philo *p, int state);
@@ -132,10 +141,12 @@ time_t	ft_crnt_tm(void);
 int		ft_usleep(time_t millisecs);
 
 /*utils.c*/
-void	ft_print_data(t_data *d);
 size_t	ft_strlen(const char *str);
-char	*ft_strjoin_space(char const *s1, char const *s2);
-char	*ft_join_3_str(char *s1, char *s2, char *s3);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
+//size_t	ft_strcpy(char *dst, const char *src);
+void	*ft_memcpy(void *dest, const void *src, size_t n);
+char	*ft_strdup(const char *s1);
 
 /*utils_itoa.c*/
 char	*ft_itoa(int n);

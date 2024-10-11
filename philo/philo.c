@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 15:10:57 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/09 16:40:39 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/11 19:23:42 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	main(int argc, const char **argv)
 	d = (t_data *)malloc(sizeof(t_data));
 	if (!d)
 		return (ft_err_exit(NULL, fs, "Memory allocation error", 1));
-	ft_parse_input(argc, argv, d);
+	if (ft_parse_input(argc, argv, d) == FALSE)
+		return (ft_err_exit(d, fs, "Input parsing error", 1));
 	w = (t_waiter *)malloc(sizeof(t_waiter));
 	if (!w)
 		return (ft_err_exit(d, fs, "Memory allocation error", 1));

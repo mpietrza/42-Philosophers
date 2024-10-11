@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: milosz <milosz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:31:12 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/10 22:21:38 by milosz           ###   ########.fr       */
+/*   Updated: 2024/10/11 17:59:19 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void ft_print_data(t_data *d)
-{
-	printf("d->nbr_of_philos = %d\n", d->nbr_of_philos);
-	printf("d->write_lock = %p\n", (void *)&(d->write_lock));
-	printf("d->meal_lock = %p\n", (void *)&(d->meal_lock));
-}
 
 size_t	ft_strlen(const char *str)
 {
@@ -29,47 +22,102 @@ size_t	ft_strlen(const char *str)
 	return (len);
 }
 
-char	*ft_strjoin_space(const char *s1, const char *s2)
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	char	*s3;
-	size_t	len1;
-	size_t	len2;
-	size_t	i;
+	size_t	d_len;
+	size_t	s_len;
+	size_t	offset;
+	size_t	src_index;
 
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	s3 = (char *)malloc((len1 + 1 + len2 + 1) * sizeof(char));
-	if (s3 == NULL)
-		return (NULL);
-	i = 0;
-	while (i < len1)
+	d_len = ft_strlen(dst);
+	s_len = ft_strlen(src);
+	if (dstsize <= d_len)
+		return (dstsize + s_len);
+	offset = d_len;
+	src_index = 0;
+	while ((*(src + src_index) != '\0') && (offset != dstsize - 1))
 	{
-		s3[i] = s1[i];
-		i++;
+		*(dst + offset) = *(src + src_index);
+		offset++;
+		src_index++;
 	}
-	s3[i] = ' ';
-	i++;
-	while (i < len1 + len2 + 1)
-	{
-		s3[i] = s2[i - len1 - 1];
-		i++;
-	}
-	s3[i] = '\0';
-	return (s3);
+	*(dst + offset) = '\0';
+	return (d_len + s_len);
 }
 
-char *ft_join_3_str(char *s1, char *s2, char *s3)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	char *s12;
-	char *s123;
+	size_t	delta_s;
+	size_t	i;
 
-	s123 = NULL;
-	s12 = ft_strjoin_space(s1, s2);
-	if (s12 == NULL)
-		return (NULL);
-	s123 = ft_strjoin_space(s12, s3);
-	free(s12);
-	if (s123 == NULL)
-		return (NULL);
-	return (s123);
+	delta_s = 0;
+	i = 0;
+	while (i < n)
+	{
+		delta_s = (unsigned char)s1[i] - (unsigned char)s2[i];
+		if (delta_s != 0)
+			return (delta_s);
+		if ((unsigned char)s1[i] == '\0')
+			return (0);
+		i++;
+	}
+	return (0);
+}
+
+
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+{
+	size_t	i;
+	size_t	needle_len;
+
+	needle_len = ft_strlen(needle);
+	i = 0;
+	if (needle_len == 0)
+		return ((char *)haystack);
+	while (i < len && haystack[i] != '\0' && len - i >= needle_len)
+	{
+		if (ft_strncmp(&haystack[i], needle, needle_len) == 0)
+			return ((char *)&haystack[i]);
+		i++;
+	}
+	return (NULL);
+}
+/*
+size_t	ft_strcpy(char *dst, const char *src)
+{
+	size_t	i;
+
+	i = 0;
+	while (src[i] != '\0')
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (i);
+}*/
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	char		*dest_ptr;
+	const char	*src_ptr;
+
+	if (!dest && !src)
+		return (0);
+	dest_ptr = (char *)dest;
+	src_ptr = (const char *)src;
+	while (n-- != 0)
+		dest_ptr[n] = src_ptr[n];
+	return (dest);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	char	*s2;
+	size_t	len;
+
+	len = ft_strlen(s1) + 1;
+	s2 = malloc(len);
+	if (s2 != NULL)
+		ft_memcpy((void *)s2, (const void *)s1, len);
+	return (s2);
 }

@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:16:05 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/09 18:24:51 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/11 19:22:46 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	ft_init_forks(t_mtx *fs, int nbr_of_philos)
 	return (TRUE);
 }
 
-void	ft_parse_input(int argc, const char **argv, t_data *d)
+int	ft_parse_input(int argc, const char **argv, t_data *d)
 {
 	d->argv = argv;
 	d->argc = argc;
@@ -97,6 +97,9 @@ void	ft_parse_input(int argc, const char **argv, t_data *d)
 	pthread_mutex_init(&d->write_lock, NULL);
 	pthread_mutex_init(&d->meal_lock, NULL);
 	d->atoi_errno = 0;
+	d->msg_counter = 0;
+	d->msg = -1;
+	return (TRUE);
 }
 
 void	ft_assign_time_and_start(t_philo **ps)
