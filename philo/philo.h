@@ -67,8 +67,8 @@ typedef struct s_data
 {
 	const char			**argv;
 	//time_t				msg_time;
-	int					msg_id;
-	int					msg;
+	int					msg_id[1024];
+	int					msg[1024];
 	size_t				msg_counter;
 	int					argc;
 	int					nbr_of_philos;

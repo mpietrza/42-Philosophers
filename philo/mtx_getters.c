@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mtx_getters.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: milosz <milosz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:37:45 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/11 19:12:57 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/12 18:20:34 by milosz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int ft_get_is_eating(t_philo *p)
 	return (is_eating);
 }
 
-int ft_get_msg(t_philo *p)
+/*int ft_get_msg(t_philo *p)
 {
 	int		msg;
 
@@ -50,24 +50,33 @@ int ft_get_msg(t_philo *p)
 	msg = p->d->msg;
 	pthread_mutex_unlock(p->write_lock);
 	return (msg);
-}
+}*/
 
 void	ft_get_msg_and_print(t_philo *p, size_t *msg_counter_prev)
 {
+	int i;
+
+	i = 0;
 	pthread_mutex_lock(p->write_lock);
+	i = *msg_counter_prev;
 	if (p->d->msg_counter != *msg_counter_prev)
 	{
-		*msg_counter_prev = p->d->msg_counter;
-		if (p->d->msg == TAKEN_FORK)
-			printf("%ld %d has taken a fork\n", ft_crnt_tm() - *p->when_sim_started, p->d->msg_id);
-		else if (p->d->msg == EATING)
-			printf("%ld %d is eating\n", ft_crnt_tm() - *p->when_sim_started, p->d->msg_id);
-		else if (p->d->msg == SLEEPING)
-			printf("%ld %d is sleeping\n", ft_crnt_tm() - *p->when_sim_started, p->d->msg_id);
-		else if (p->d->msg == THINKING)
-			printf("%ld %d is thinking\n", ft_crnt_tm() - *p->when_sim_started, p->d->msg_id);
-		/*else if (p->d->msg == DIED)
-			printf("%ld %d died\n", ft_crnt_tm() - *p->when_sim_started, p->d->msg_id);*/
+		while (i < (int)p->d->msg_counter)
+		{
+			printf("i = %d\n", i);
+			if (p->d->msg[i] == TAKEN_FORK)
+				printf("%ld %d has taken a fork\n", ft_crnt_tm() - *p->when_sim_started, p->d->msg_id[i]);
+			else if (p->d->msg[i] == EATING)
+				printf("%ld %d is eating\n", ft_crnt_tm() - *p->when_sim_started, p->d->msg_id[i]);
+			else if (p->d->msg[i] == SLEEPING)
+				printf("%ld %d is sleeping\n", ft_crnt_tm() - *p->when_sim_started, p->d->msg_id[i]);
+			else if (p->d->msg[i] == THINKING)
+				printf("%ld %d is thinking\n", ft_crnt_tm() - *p->when_sim_started, p->d->msg_id[i]);
+			/*else if (p->d->msg[i] == DIED)
+				printf("%ld %d died\n", ft_crnt_tm() - *p->when_sim_started, p->d->msg_id);*/
+			i++;
+		}
 	}
+	*msg_counter_prev = p->d->msg_counter;
 	pthread_mutex_unlock(p->write_lock);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_parse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: milosz <milosz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:16:05 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/11 19:22:46 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/12 18:17:18 by milosz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ int	ft_parse_input(int argc, const char **argv, t_data *d)
 	pthread_mutex_init(&d->meal_lock, NULL);
 	d->atoi_errno = 0;
 	d->msg_counter = 0;
-	d->msg = -1;
+	d->msg[0] = -1;
+	d->msg_id[0] = -1;
 	return (TRUE);
 }
 

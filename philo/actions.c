@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: milosz <milosz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 17:08:28 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/11 19:17:44 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/12 18:16:05 by milosz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 void	ft_message(int msg, t_philo *p, int id)
 {
+	if (ft_get_waiter_state(p) != SERVING)
+		return ;
 	pthread_mutex_lock(p->write_lock);
-	p->d->msg_id = id;
-	p->d->msg = msg;
+	p->d->msg_id[p->d->msg_counter] = id;
+	p->d->msg[p->d->msg_counter] = msg;
 	p->d->msg_counter++;
 	pthread_mutex_unlock(p->write_lock);
 	usleep(10);
@@ -72,6 +74,7 @@ static int ft_take_forks(t_philo *p, int lr_or_rl)
 		if (pthread_mutex_lock(p->fork_l) != 0)
 			return (FALSE);
 		ft_message(TAKEN_FORK, p, p->philo_id);
+		usleep(10);
 		if (pthread_mutex_lock(p->fork_r) != 0)
 		{
 			ft_fork_mutex_unlock(p, TRUE, FALSE);
@@ -83,6 +86,7 @@ static int ft_take_forks(t_philo *p, int lr_or_rl)
 		if (pthread_mutex_lock(p->fork_r) != 0)
 			return (FALSE);
 		ft_message(TAKEN_FORK, p, p->philo_id);
+		usleep(10);
 		if (pthread_mutex_lock(p->fork_l) != 0)
 		{
 			ft_fork_mutex_unlock(p, FALSE, TRUE);
@@ -112,6 +116,7 @@ int	ft_eat(t_philo *p)
 		if (ft_take_forks(p, RIGHT_LEFT) == FALSE)
 			return (FALSE);
 	ft_message(TAKEN_FORK, p, p->philo_id);
+	usleep(10);
 	ft_message(EATING, p, p->philo_id);
 	if (ft_increment_meal_counter(p) == FALSE)
 		return (FALSE);
@@ -128,6 +133,7 @@ int	ft_sleep(t_philo *p)
 	if (ft_get_waiter_state(p) != SERVING)
 		return (FALSE);
 	ft_message(SLEEPING, p, p->philo_id);
+	usleep(10);
 	ft_usleep(p->tm_t_sleep);
 	return (TRUE);
 }
@@ -137,6 +143,7 @@ int	ft_think(t_philo *p)
 	if (ft_get_waiter_state(p) != SERVING)
 		return (FALSE);
 	ft_message(THINKING, p, p->philo_id);
-		return (TRUE);
+	usleep(10);
+	return (TRUE);
 }
 
