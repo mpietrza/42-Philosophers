@@ -15,6 +15,7 @@
 # define TRUE 1
 # define FALSE 0
 # define AFTER_BUF_SIZE 2
+# define FALSE_WITHOUT_ERR_MESSAGE -1
 # define PREPARING 0
 # define SERVING 1
 # define CLEANING 2
@@ -46,12 +47,12 @@ typedef pthread_mutex_t t_mtx;
 
 typedef struct s_philo
 {
-	pthread_t	philo; // a philo is a thread
+	pthread_t	philo;
 	int			nbr_of_philos;
 	int			philo_id;
 	int			is_eating;
 	int			nbr_of_meals_eaten;
-	int 		nbr_of_meals_per_philo; // if -1 = error; if -1 = no arg
+	int 		nbr_of_meals_per_philo;
 	time_t		when_was_last_meal; 
 	time_t		tm_t_die;
 	time_t		tm_t_eat;	
@@ -103,34 +104,37 @@ size_t	ft_atos_t_positive(const char *str);
 
 /*arg_check.c*/
 int		ft_my_isdigit(int c);
-int		ft_check_argv(const char **argv);
+int		ft_check_arg(int argc, const char **argv);
 
 /*free_exit.c*/
-void	ft_free_philos(t_philo **ps);
+void	ft_free_philos(t_philo **ps, int nbr_of_philos);
 void	ft_free_data(t_data *d);
 int		ft_err_exit(t_data *d, t_mtx *fs, const char *err_message, int ret);
 
-/*init_parse.c*/
-int		ft_init_forks(t_mtx *fs, int nbr_of_philos);
-int		ft_init_philos(t_data *d, t_mtx *fs, t_waiter *w, t_philo **ps);
-int		ft_parse_input(int argc, const char **argv, t_data *d);
+/*init.c*/
 int		ft_init_waiter(t_waiter *w);
+int		ft_init_philos(t_data *d, t_mtx *fs, t_waiter *w, t_philo **ps);
+int		ft_init_forks(t_mtx *fs, int nbr_of_philos);
 void	ft_assign_time_and_start(t_philo **ps);
 
 /*monitoring.c*/
-int		ft_is_philo_dead(t_philo *p);
 int		ft_has_anyone_died(t_philo **ps);
 int		ft_have_all_eaten(t_philo **ps);
 void	*ft_monitoring(void *ptr);
 
 /*mtx_getters.c*/
-int		ft_get_val_locked(t_mtx *lock, int *value);
-time_t	ft_get_time_locked(t_mtx *lock, time_t *value);
+int		ft_get_val(t_mtx *lock, int *value);
+time_t	ft_get_time(t_mtx *lock, time_t *value);
 void	ft_get_msg_and_print(t_philo *p, size_t *msg_counter_prev);
 
 /*mtx_setters.c*/
+void	ft_set_time(t_mtx *lock, time_t *value, time_t new_value);
 void	ft_set_waiter_state(t_philo *p, int state);
-void	ft_fork_mutex_unlock(t_philo *p, int is_fork_l, int is_fork_r);\
+void	ft_fork_mutex_unlock(t_philo *p, int is_fork_l, int is_fork_r);
+
+/*parse.c*/
+int 	ft_parse_input(int argc, const char **argv, t_data *d);
+void	ft_parse_philo(t_data *d, t_philo *p);
 
 /*!!!!!!philo.c!!!!!!*/
 

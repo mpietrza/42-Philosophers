@@ -35,10 +35,11 @@ SRCS			= actions.c \
 			  atoi_secured.c \
 			  arg_check.c \
 			  free_exit.c \
-			  init_parse.c \
+			  init.c \
 			  monitoring.c \
 			  mtx_getters.c \
 			  mtx_setters.c \
+			  parse.c \
 			  philo.c \
 			  routine.c \
 			  threads.c\

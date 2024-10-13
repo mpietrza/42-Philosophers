@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 13:21:27 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/13 13:33:05 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/13 16:26:06 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ static int ft_take_forks(t_philo *p, int lr_or_rl)
 		if (pthread_mutex_lock(p->fork_l) != 0)
 			return (FALSE);
 		ft_message(TAKEN_FORK, p, p->philo_id);
-//		usleep(10);
 		if (pthread_mutex_lock(p->fork_r) != 0)
 		{
 			ft_fork_mutex_unlock(p, TRUE, FALSE);
@@ -66,7 +65,6 @@ static int ft_take_forks(t_philo *p, int lr_or_rl)
 		if (pthread_mutex_lock(p->fork_r) != 0)
 			return (FALSE);
 		ft_message(TAKEN_FORK, p, p->philo_id);
-//		usleep(10);
 		if (pthread_mutex_lock(p->fork_l) != 0)
 		{
 			ft_fork_mutex_unlock(p, FALSE, TRUE);
@@ -80,7 +78,7 @@ static int ft_take_forks(t_philo *p, int lr_or_rl)
 
 int	ft_eat(t_philo *p)
 {
-	if (ft_get_val_locked(p->w->waiter_lock, &p->w->state) != SERVING)
+	if (ft_get_val(p->w->waiter_lock, &p->w->state) != SERVING)
 		return (FALSE);
 	if (p->nbr_of_philos == 1)
 	{
@@ -96,7 +94,6 @@ int	ft_eat(t_philo *p)
 		if (ft_take_forks(p, RIGHT_LEFT) == FALSE)
 			return (FALSE);
 	ft_message(TAKEN_FORK, p, p->philo_id);
-	usleep(10);
 	ft_message(EATING, p, p->philo_id);
 	if (ft_increment_meal_counter(p) == FALSE)
 		return (FALSE);
@@ -106,4 +103,3 @@ int	ft_eat(t_philo *p)
 	ft_fork_mutex_unlock(p, TRUE, TRUE);
 	return (TRUE);
 }
-

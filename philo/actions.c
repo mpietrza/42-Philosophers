@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 17:08:28 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/13 14:12:32 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/13 16:30:05 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,22 @@ void	ft_message(int msg, t_philo *p, int id)
 	else
 		p->d->msg_counter++;
 	pthread_mutex_unlock(p->write_lock);
-	usleep(10);
 }
 
 int	ft_sleep(t_philo *p)
 {
-	if (ft_get_val_locked(p->w->waiter_lock, &p->w->state) != SERVING)
+	if (ft_get_val(p->w->waiter_lock, &p->w->state) != SERVING)
 		return (FALSE);
 	ft_message(SLEEPING, p, p->philo_id);
-	usleep(10);
 	ft_usleep(p->tm_t_sleep);
 	return (TRUE);
 }
 
 int	ft_think(t_philo *p)
 {
-	if (ft_get_val_locked(p->w->waiter_lock, &p->w->state) != SERVING)
+	if (ft_get_val(p->w->waiter_lock, &p->w->state) != SERVING)
 		return (FALSE);
 	ft_message(THINKING, p, p->philo_id);
-	usleep(10);
 	return (TRUE);
 }
 

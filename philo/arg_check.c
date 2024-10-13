@@ -6,7 +6,7 @@
 /*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 16:08:51 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/01 17:40:36 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/13 16:23:46 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,12 @@ int     ft_my_isdigit(int c)
 	return (FALSE);
 }
 
-static void	ft_check_argv_err_message(int i)
+static int ft_check_argv_err_message(int i)
 {
 	printf("Error!\n");
-	if (i == 1)
+	if (i == 0)
+		printf("Invalid number of arguments\n");
+	else if (i == 1)
 		printf("Invalid number of philosophers\n");
 	else if (i == 2)
 		printf("Invalid time to die\n");
@@ -37,16 +39,19 @@ static void	ft_check_argv_err_message(int i)
 	else if (i == 5)
 	{
 		printf("Invalid number of times each philosopher");
-		printf(" must eat");
+		printf(" must eat\n");
 	}
+	return (FALSE);
 }
 
-int	ft_check_argv(const char **argv)
+static int ft_check_argv(const char **argv)
 {
 	int	i;
 	int	j;
+	int flag;
 
 	i = 1;
+	flag = 0;
 	while (argv[i])
 	{
 		j = 0;
@@ -54,30 +59,29 @@ int	ft_check_argv(const char **argv)
 		{	
 			if (ft_my_isdigit(argv[i][j]) == FALSE)
 			{
+				flag += 1;
 				ft_check_argv_err_message(i);
-				return (FALSE);
+				break;
 			}
 			j++;
 		}
 		i++;
 	}
+	if (flag)
+		return (FALSE);
 	return (TRUE);
 }
 
-
-/*
-char	*ft_strchr(const char *s, int c)
+int	ft_check_arg(int argc, const char **argv)
 {
-	int	i;
+	if (!argv)
+		return (FALSE);
+	if (!(argc == 5 || argc == 6))
+		return (ft_check_argv_err_message(0));
+	if (argv[1][0] == '0')
+		return (ft_check_argv_err_message(1));
+	if (ft_check_argv(argv) == FALSE)
+		return (FALSE);
+	return (TRUE);
+}
 
-	i = 0;
-	if (!s)
-		return (NULL);
-	while (s[i])
-	{
-		if (s[i] == c)
-			return ((char *)&s[i]);
-		i++;
-	}
-	return (NULL);
-}*/
