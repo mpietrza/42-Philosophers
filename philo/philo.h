@@ -14,6 +14,7 @@
 # define PHILO_H
 # define TRUE 1
 # define FALSE 0
+# define AFTER_BUF_SIZE 2
 # define PREPARING 0
 # define SERVING 1
 # define CLEANING 2
@@ -24,6 +25,7 @@
 # define SLEEPING 2
 # define THINKING 3
 # define DIED 4
+# define BUF_SIZE 1024
 
 # include <unistd.h> //write, usleep
 # include <limits.h> //INT_MAX in ft_atoi_secured
@@ -66,9 +68,11 @@ typedef struct s_philo
 typedef struct s_data
 {
 	const char			**argv;
-	//time_t				msg_time;
-	int					msg_id[1024];
-	int					msg[1024];
+	time_t				msg_time[BUF_SIZE];
+	int					msg_id[BUF_SIZE];
+	int					msg[BUF_SIZE];
+	int					is_first_message;
+	int					is_last_message;
 	size_t				msg_counter;
 	int					argc;
 	int					nbr_of_philos;
@@ -88,10 +92,11 @@ typedef struct s_waiter
 /***************************** list of functions ******************************/
 /*actions.c*/
 void	ft_message(int msg, t_philo *p, int id);
-int		ft_eat(t_philo *p);
 int		ft_sleep(t_philo *p);
 int		ft_think(t_philo *p);
-//int		ft_check_if_philo_is_still_alive(t_philo *p);
+
+/*actions_eat.c*/
+int		ft_eat(t_philo *p);
 
 /*atoi_secured.c*/
 size_t	ft_atos_t_positive(const char *str);
@@ -119,14 +124,13 @@ int		ft_have_all_eaten(t_philo **ps);
 void	*ft_monitoring(void *ptr);
 
 /*mtx_getters.c*/
-int		ft_get_waiter_state(t_philo *p);
-time_t	ft_get_when_was_last_meal(t_philo *p);
-int 	ft_get_is_eating(t_philo *p);
-int		ft_get_msg(t_philo *p);
+int		ft_get_val_locked(t_mtx *lock, int *value);
+time_t	ft_get_time_locked(t_mtx *lock, time_t *value);
 void	ft_get_msg_and_print(t_philo *p, size_t *msg_counter_prev);
 
 /*mtx_setters.c*/
 void	ft_set_waiter_state(t_philo *p, int state);
+void	ft_fork_mutex_unlock(t_philo *p, int is_fork_l, int is_fork_r);\
 
 /*!!!!!!philo.c!!!!!!*/
 
@@ -144,7 +148,6 @@ int		ft_usleep(time_t millisecs);
 size_t	ft_strlen(const char *str);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
-//size_t	ft_strcpy(char *dst, const char *src);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 char	*ft_strdup(const char *s1);
 

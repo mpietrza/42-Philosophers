@@ -1,6 +1,7 @@
 {
 	"files.associations": {
-		"philo.h": "c"
+		"philo.h": "c",
+		"string.h": "c"
 	},
 	"makefile.configureOnOpen": false
 }

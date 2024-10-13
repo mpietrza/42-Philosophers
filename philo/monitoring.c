@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitoring.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: milosz <milosz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:52 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/12 18:23:25 by milosz           ###   ########.fr       */
+/*   Updated: 2024/10/13 14:04:26 by mpietrza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ int    ft_has_anyone_died(t_philo **ps)
 	i = 0;
 	while (i < ps[0]->nbr_of_philos)
 	{
-		if ((ft_crnt_tm() - ft_get_when_was_last_meal(ps[i]) >= ps[0]->tm_t_die)
-			&& ft_get_is_eating(ps[i]) == FALSE)
+		if ((ft_crnt_tm() - ft_get_time_locked(ps[i]->meal_lock, &ps[i]->when_was_last_meal) >= ps[0]->tm_t_die)
+			&& ft_get_val_locked(ps[i]->meal_lock, &ps[i]->is_eating) == FALSE)
 		{
 			pthread_mutex_lock(ps[0]->write_lock);
-			printf("\033[1;31m%ld %d died\033[0m\n", ft_crnt_tm() - *ps[i]->when_sim_started, ps[i]->philo_id);
+			if (ps[i]->d->is_last_message == FALSE)
+				printf("\033[1;31m%ld %d died\033[0m\n", ft_crnt_tm() - *ps[i]->when_sim_started, ps[i]->philo_id);
+			ps[i]->d->is_last_message = TRUE;
 			pthread_mutex_unlock(ps[0]->write_lock);
 			return (TRUE);
 		}

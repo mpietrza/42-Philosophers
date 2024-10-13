@@ -31,6 +31,7 @@ W = "\033[37m"
 #SOURCES
 
 SRCS			= actions.c \
+			  actions_eat.c \
 			  atoi_secured.c \
 			  arg_check.c \
 			  free_exit.c \

@@ -1,0 +1,109 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   actions_eat.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/13 13:21:27 by mpietrza          #+#    #+#             */
+/*   Updated: 2024/10/13 13:33:05 by mpietrza         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+static void ft_one_philo(t_philo *p)
+{
+	if (pthread_mutex_lock(p->fork_r) != 0)
+		return ;
+	ft_message(TAKEN_FORK, p, p->philo_id);
+	ft_usleep(p->tm_t_die);
+	pthread_mutex_unlock(p->fork_r);
+}
+
+static int	ft_increment_meal_counter(t_philo *p)
+{
+	if (pthread_mutex_lock(p->meal_lock) != 0)
+	{
+		ft_fork_mutex_unlock(p, TRUE, TRUE);
+		return (FALSE);
+	}
+	p->is_eating = TRUE;
+	p->nbr_of_meals_eaten++;
+	pthread_mutex_unlock(p->meal_lock);
+	return (TRUE);
+}
+
+static int ft_update_last_meal_time_and_change_is_eating(t_philo *p)
+{
+	if (pthread_mutex_lock(p->meal_lock) != 0)
+	{
+		ft_fork_mutex_unlock(p, TRUE, TRUE);
+		return (FALSE);
+	}
+	p->when_was_last_meal = ft_crnt_tm();	
+	p->is_eating = FALSE;
+	pthread_mutex_unlock(p->meal_lock);
+	return (TRUE);
+}
+
+static int ft_take_forks(t_philo *p, int lr_or_rl)
+{
+	if (lr_or_rl == LEFT_RIGHT)
+	{
+		if (pthread_mutex_lock(p->fork_l) != 0)
+			return (FALSE);
+		ft_message(TAKEN_FORK, p, p->philo_id);
+//		usleep(10);
+		if (pthread_mutex_lock(p->fork_r) != 0)
+		{
+			ft_fork_mutex_unlock(p, TRUE, FALSE);
+			return (FALSE);
+		}
+	}
+	else if (lr_or_rl == RIGHT_LEFT)
+	{
+		if (pthread_mutex_lock(p->fork_r) != 0)
+			return (FALSE);
+		ft_message(TAKEN_FORK, p, p->philo_id);
+//		usleep(10);
+		if (pthread_mutex_lock(p->fork_l) != 0)
+		{
+			ft_fork_mutex_unlock(p, FALSE, TRUE);
+			return (FALSE);
+		}
+	}
+	else
+		return (FALSE);
+	return (TRUE);
+}
+
+int	ft_eat(t_philo *p)
+{
+	if (ft_get_val_locked(p->w->waiter_lock, &p->w->state) != SERVING)
+		return (FALSE);
+	if (p->nbr_of_philos == 1)
+	{
+		ft_one_philo(p);
+		return (TRUE);
+	}
+	else if ((p->philo_id) % 2 == 0)
+	{
+		if (ft_take_forks(p, LEFT_RIGHT) == FALSE)
+			return (FALSE);
+	}
+	else
+		if (ft_take_forks(p, RIGHT_LEFT) == FALSE)
+			return (FALSE);
+	ft_message(TAKEN_FORK, p, p->philo_id);
+	usleep(10);
+	ft_message(EATING, p, p->philo_id);
+	if (ft_increment_meal_counter(p) == FALSE)
+		return (FALSE);
+	ft_usleep(p->tm_t_eat);		
+	if (ft_update_last_meal_time_and_change_is_eating(p) == FALSE)
+		return (FALSE);
+	ft_fork_mutex_unlock(p, TRUE, TRUE);
+	return (TRUE);
+}
+
