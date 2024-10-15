@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: milosz <milosz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 16:33:19 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/13 16:45:48 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:07:52 by milosz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,17 @@ int	ft_parse_input(int argc, const char **argv, t_data *d)
 
 void ft_parse_philo(t_data *d, t_philo *p)
 {
-		p->nbr_of_philos = d->nbr_of_philos;
-		p->when_was_last_meal = ft_crnt_tm();
-		p->tm_t_die = (time_t)ft_atos_t_positive(d->argv[2]);
-		p->tm_t_eat = (time_t)ft_atos_t_positive(d->argv[3]);
-		p->tm_t_sleep = (unsigned long long)ft_atos_t_positive(d->argv[4]);
-		if (d->argc == 6)
-			p->nbr_of_meals_per_philo = (int)ft_atos_t_positive(d->argv[5]);
-		else
-			p->nbr_of_meals_per_philo = -1;
-		p->write_lock = &d->write_lock;
-		p->meal_lock = &d->meal_lock;
+	p->nbr_of_philos = d->nbr_of_philos;
+	p->when_was_last_meal = ft_crnt_tm();
+	p->tm_t_die = (time_t)ft_atos_t_positive(d->argv[2]);
+	p->tm_t_eat = (time_t)ft_atos_t_positive(d->argv[3]);
+	p->tm_t_sleep = (unsigned long long)ft_atos_t_positive(d->argv[4]);
+	if (d->argc == 6)
+		p->nbr_of_meals_per_philo = (int)ft_atos_t_positive(d->argv[5]);
+	else
+		p->nbr_of_meals_per_philo = -1;
+	p->write_lock = &d->write_lock;
+	p->meal_lock = &d->meal_lock;
+	p->is_eating = FALSE;
+	p->nbr_of_meals_eaten = 0;
 }

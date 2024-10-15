@@ -42,7 +42,7 @@
 /*struct - for data transfer thoughout the program*/
 typedef struct s_data t_data;
 typedef struct s_philo t_philo;
-typedef struct s_waiter t_waiter;
+typedef struct s_waiter t_wtr;
 typedef pthread_mutex_t t_mtx;
 
 typedef struct s_philo
@@ -63,7 +63,7 @@ typedef struct s_philo
 	t_mtx		*write_lock;
 	t_mtx		*meal_lock;
 	t_data		*d;
-	t_waiter	*w;
+	t_wtr	*w;
 }			t_philo;
 
 typedef struct s_data
@@ -88,7 +88,7 @@ typedef struct s_waiter
 {
 	t_mtx		*waiter_lock;
 	int			state;
-}			t_waiter;
+}			t_wtr;
 
 /***************************** list of functions ******************************/
 /*actions.c*/
@@ -109,13 +109,15 @@ int		ft_check_arg(int argc, const char **argv);
 /*free_exit.c*/
 void	ft_free_philos(t_philo **ps, int nbr_of_philos);
 void	ft_free_data(t_data *d);
-int		ft_err_exit(t_data *d, t_mtx *fs, const char *err_message, int ret);
+int		ft_exit_success(t_data *d, t_mtx *fs, t_wtr *w);
+int		ft_err_exit(t_data *d, t_mtx *fs, t_wtr *w, const char *err_message);
 
 /*init.c*/
-int		ft_init_waiter(t_waiter *w);
-int		ft_init_philos(t_data *d, t_mtx *fs, t_waiter *w, t_philo **ps);
-int		ft_init_forks(t_mtx *fs, int nbr_of_philos);
-void	ft_assign_time_and_start(t_philo **ps);
+t_data	*ft_init_data(int argc, const char **argv);
+t_wtr	*ft_init_wtr(void);
+t_philo	**ft_init_philos(t_data *d, t_mtx *fs, t_wtr *w);
+t_mtx	*ft_init_forks(int nbr_of_philos);
+
 
 /*monitoring.c*/
 int		ft_has_anyone_died(t_philo **ps);
@@ -129,7 +131,7 @@ void	ft_get_msg_and_print(t_philo *p, size_t *msg_counter_prev);
 
 /*mtx_setters.c*/
 void	ft_set_time(t_mtx *lock, time_t *value, time_t new_value);
-void	ft_set_waiter_state(t_philo *p, int state);
+void	ft_set_wtr_state(t_philo *p, int state);
 void	ft_fork_mutex_unlock(t_philo *p, int is_fork_l, int is_fork_r);
 
 /*parse.c*/
@@ -137,6 +139,7 @@ int 	ft_parse_input(int argc, const char **argv, t_data *d);
 void	ft_parse_philo(t_data *d, t_philo *p);
 
 /*!!!!!!philo.c!!!!!!*/
+void	ft_assign_time_and_start(t_philo **ps);
 
 /*routine.c*/
 void	*ft_philo_routine(void *ptr);

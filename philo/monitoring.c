@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitoring.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: milosz <milosz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:52 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/13 16:59:02 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:16:19 by milosz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	*ft_monitoring(void *ptr)
 	{
 		if (ft_has_anyone_died(ps) == TRUE)
 		{
-			ft_set_waiter_state(ps[0], CLEANING);
+			ft_set_wtr_state(ps[0], CLEANING);
 			break ;
 		}
 		if (ps[0]->nbr_of_meals_per_philo != -1)
@@ -80,7 +80,7 @@ void	*ft_monitoring(void *ptr)
 			
 			if (ft_have_all_eaten(ps) == ps[0]->nbr_of_philos)
 			{	
-				ft_set_waiter_state(ps[0], CLEANING);
+				ft_set_wtr_state(ps[0], CLEANING);
 				break ;
 			}
 		}

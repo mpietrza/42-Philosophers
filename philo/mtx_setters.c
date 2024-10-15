@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mtx_setters.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: milosz <milosz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 17:46:46 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/13 15:38:31 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:16:19 by milosz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_set_val(t_mtx *lock, int *value, int new_value)
 	pthread_mutex_unlock(lock);
 }
 
-void	ft_set_waiter_state(t_philo *p, int state)
+void	ft_set_wtr_state(t_philo *p, int state)
 {
 	pthread_mutex_lock(p->w->waiter_lock);
 	p->w->state = state;

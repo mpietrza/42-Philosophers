@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_time.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpietrza <mpietrza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: milosz <milosz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:33:38 by mpietrza          #+#    #+#             */
-/*   Updated: 2024/10/10 14:47:23 by mpietrza         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:34:43 by milosz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ time_t	ft_crnt_tm(void)
 	time_t			crnt_tm;
 
 	if (gettimeofday(&time, NULL) == -1)
-		ft_err_exit(NULL, NULL, "gettimeofday error", 22);
+		ft_err_exit(NULL, NULL, NULL, "gettimeofday error");
 	crnt_tm = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	return (crnt_tm);
 }
